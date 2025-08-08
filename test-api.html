@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Test</title>
+  </head>
+  <body>
+    <h1>Trivia API Test</h1>
+    <button onclick="testAPI()">Test API</button>
+    <div id="result"></div>
+
+    <script src="data.js"></script>
+    <script src="api.js"></script>
+    <script>
+      async function testAPI() {
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = "Testing API...";
+
+        try {
+          const questions = await triviaAPI.fetchQuestions(
+            "general",
+            "easy",
+            5
+          );
+          resultDiv.innerHTML = `
+                    <h3>API Test Successful!</h3>
+                    <p>Fetched ${questions.length} questions</p>
+                    <h4>Sample Question:</h4>
+                    <p><strong>Question:</strong> ${questions[0].question}</p>
+                    <p><strong>Options:</strong> ${questions[0].options.join(
+                      ", "
+                    )}</p>
+                    <p><strong>Correct Answer:</strong> ${
+                      questions[0].options[questions[0].correct]
+                    }</p>
+                `;
+        } catch (error) {
+          resultDiv.innerHTML = `
+                    <h3>API Test Failed</h3>
+                    <p>Error: ${error.message}</p>
+                    <p>This might be due to network issues or API unavailability.</p>
+                `;
+        }
+      }
+    </script>
+  </body>
+</html>

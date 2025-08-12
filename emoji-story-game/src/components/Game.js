@@ -34,6 +34,7 @@ const Game = () => {
   const [feedback, setFeedback] = useState("");
   const [isMuted, setIsMuted] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [isTimerPaused, setIsTimerPaused] = useState(false);
 
   const bgmAudioRef = useRef(null);
   const MAX_ROUNDS = 10;
@@ -364,7 +365,7 @@ const Game = () => {
           poem: "📝",
           bet: "💰",
           memory: "🧠",
-          erase: "🧽",
+          erase: "",
           beach: "🏖️",
           cancer: "🦀",
           amsterdam: "🇳🇱",
@@ -489,7 +490,12 @@ const Game = () => {
   }, [gamePhase, currentGame, loadPuzzle]);
 
   useEffect(() => {
-    if (gamePhase !== "playing" || isLoading || currentGame !== "emoji-story")
+    if (
+      gamePhase !== "playing" ||
+      isLoading ||
+      currentGame !== "emoji-story" ||
+      isTimerPaused
+    )
       return;
 
     const timer = setInterval(() => {
@@ -503,7 +509,7 @@ const Game = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [gamePhase, isLoading, currentGame]);
+  }, [gamePhase, isLoading, currentGame, isTimerPaused]);
 
   useEffect(() => {
     if (!bgmAudioRef.current) {
@@ -573,11 +579,16 @@ const Game = () => {
     setScore(0);
     setTimeLeft(15);
     setFeedback("");
+    setIsTimerPaused(false); // Reset timer pause state
     playBgm();
   };
 
   const handleTimeUp = () => {
-    setCurrentPuzzleIndex((prev) => prev + 1);
+    if (feedback === "") {
+      // Only auto-advance if no answer was given
+      setFeedback("timeout");
+      setIsTimerPaused(true);
+    }
   };
 
   const handleAnswerSubmit = (answer) => {
@@ -591,13 +602,18 @@ const Game = () => {
       const roundScore = 10 + timeBonus;
       setScore((prev) => prev + roundScore);
       setFeedback("correct");
+      setIsTimerPaused(true); // Pause timer when answer is submitted
     } else {
       setFeedback("incorrect");
+      setIsTimerPaused(true); // Pause timer when answer is submitted
     }
   };
 
   const handleNext = () => {
     setCurrentPuzzleIndex((prev) => prev + 1);
+    setTimeLeft(15); // Reset timer for next question
+    setIsTimerPaused(false); // Resume timer for next question
+    setFeedback(""); // Clear feedback
   };
 
   // remove unused hint handler entirely
@@ -608,6 +624,7 @@ const Game = () => {
     setScore(0);
     setTimeLeft(15);
     setFeedback("");
+    setIsTimerPaused(false); // Reset timer pause state
   };
 
   // Render different phases and games
@@ -744,7 +761,22 @@ const Game = () => {
               </div>
             )}
 
-            {/* Next Button - only after answering */}
+            {/* Timeout Message */}
+            {feedback === "timeout" && (
+              <div className="mb-2 p-4 bg-red-50 backdrop-blur rounded-xl ring-1 ring-red-200 shadow">
+                <div className="flex items-center justify-between">
+                  <p className="text-red-700 text-sm">
+                    <span className="font-medium">Time's up!</span> The correct
+                    answer was: {currentPuzzle?.answer}
+                  </p>
+                  <span className="text-red-500" aria-hidden>
+                    ⏰
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Next Button - only after answering or timeout */}
             {feedback !== "" && (
               <div className="text-center mt-4">
                 <button

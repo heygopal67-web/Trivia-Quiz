@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { puzzles } from "../data";
 import { fetchEmojisForKeywords } from "../api";
+import GameSelector from "./GameSelector";
 import StartScreen from "./StartScreen";
 import Timer from "./Timer";
 import EmojiDisplay from "./EmojiDisplay";
 import AnswerInput from "./AnswerInput";
 import GameOver from "./GameOver";
+import WordScramble from "./WordScramble";
+import MathPuzzle from "./MathPuzzle";
+import MemoryGame from "./MemoryGame";
 
 const Game = () => {
-  const [gamePhase, setGamePhase] = useState("start");
+  const [currentGame, setCurrentGame] = useState(null); // 'emoji-story', 'word-scramble', 'math-puzzle', 'memory-game'
+  const [gamePhase, setGamePhase] = useState("menu"); // 'menu', 'start', 'playing', 'gameOver'
   const [currentPuzzleIndex, setCurrentPuzzleIndex] = useState(0);
   const [currentPuzzle, setCurrentPuzzle] = useState(null);
   const [currentEmojis, setCurrentEmojis] = useState([]);
@@ -77,13 +82,14 @@ const Game = () => {
   }, [currentPuzzleIndex, currentPuzzleData]);
 
   useEffect(() => {
-    if (gamePhase === "playing") {
+    if (gamePhase === "playing" && currentGame === "emoji-story") {
       loadPuzzle();
     }
-  }, [gamePhase, loadPuzzle]);
+  }, [gamePhase, currentGame, loadPuzzle]);
 
   useEffect(() => {
-    if (gamePhase !== "playing" || isLoading) return;
+    if (gamePhase !== "playing" || isLoading || currentGame !== "emoji-story")
+      return;
 
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -96,7 +102,26 @@ const Game = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [gamePhase, isLoading]);
+  }, [gamePhase, isLoading, currentGame]);
+
+  const handleGameSelect = (gameId) => {
+    setCurrentGame(gameId);
+    if (gameId === "emoji-story") {
+      setGamePhase("start");
+    } else {
+      setGamePhase("playing");
+    }
+  };
+
+  const handleBackToMenu = () => {
+    setCurrentGame(null);
+    setGamePhase("menu");
+    setCurrentPuzzleIndex(0);
+    setScore(0);
+    setTimeLeft(15);
+    setShowHint(false);
+    setFeedback("");
+  };
 
   const handleStartGame = () => {
     setGamePhase("playing");
@@ -148,8 +173,30 @@ const Game = () => {
     setFeedback("");
   };
 
+  // Render different phases and games
+  if (gamePhase === "menu") {
+    return <GameSelector onSelectGame={handleGameSelect} />;
+  }
+
+  if (currentGame === "word-scramble") {
+    return <WordScramble onBackToMenu={handleBackToMenu} />;
+  }
+
+  if (currentGame === "math-puzzle") {
+    return <MathPuzzle onBackToMenu={handleBackToMenu} />;
+  }
+
+  if (currentGame === "memory-game") {
+    return <MemoryGame onBackToMenu={handleBackToMenu} />;
+  }
+
   if (gamePhase === "start") {
-    return <StartScreen onStartGame={handleStartGame} />;
+    return (
+      <StartScreen
+        onStartGame={handleStartGame}
+        onBackToMenu={handleBackToMenu}
+      />
+    );
   }
 
   if (gamePhase === "gameOver") {
@@ -167,17 +214,26 @@ const Game = () => {
     );
   }
 
+  // Render Emoji Story Game
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
+        {/* Header with Back Button */}
         <div className="text-center mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <button
+              onClick={handleBackToMenu}
+              className="px-4 py-2 text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+            >
+              ← Back to Menu
+            </button>
+            <div className="text-slate-400 text-sm uppercase tracking-wider">
+              Score: {score}
+            </div>
+          </div>
           <h1 className="text-3xl font-light text-white mb-2">
             Guess the Emoji Story
           </h1>
-          <p className="text-slate-400 text-sm uppercase tracking-wider">
-            Score: {score}
-          </p>
         </div>
 
         {/* Timer */}

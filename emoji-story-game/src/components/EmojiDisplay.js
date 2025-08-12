@@ -13,17 +13,17 @@ const EmojiDisplay = ({ emojis, feedback }) => {
   };
 
   return (
-    <div className="mb-8">
+    <div className="mb-6">
       <div className="text-center">
-        <h2 className="text-slate-600 text-base font-medium mb-6 tracking-wide">
+        <h2 className="text-slate-600 text-sm font-medium mb-4 tracking-wide">
           What does this represent?
         </h2>
 
         {/* Emoji Container - Larger and more prominent */}
         <div
-          className={`inline-block p-10 md:p-12 rounded-2xl border transition-all duration-300 ${getFeedbackClass()}`}
+          className={`inline-block p-4 md:p-6 rounded-2xl border transition-all duration-300 ${getFeedbackClass()}`}
         >
-          <div className="flex items-center justify-center gap-6 md:gap-10 text-6xl md:text-8xl">
+          <div className="flex items-center justify-center gap-5 md:gap-8 text-5xl md:text-7xl">
             {emojis.map((emoji, index) => (
               <span
                 key={index}
@@ -36,13 +36,9 @@ const EmojiDisplay = ({ emojis, feedback }) => {
         </div>
 
         {/* Feedback Message */}
-        {feedback && (
-          <div
-            className={`mt-4 text-base font-medium ${
-              feedback === "correct" ? "text-emerald-600" : "text-red-600"
-            }`}
-          >
-            {feedback === "correct" ? "Correct!" : "Try again"}
+        {feedback === "correct" && (
+          <div className="mt-3 text-sm md:text-base font-medium text-emerald-600">
+            Correct!
           </div>
         )}
       </div>

@@ -19,7 +19,7 @@ const Game = () => {
   const [currentEmojis, setCurrentEmojis] = useState([]);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(15);
-  const [showHint, setShowHint] = useState(false);
+  // hint is always shown; remove previous hint state entirely
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState("");
 
@@ -32,7 +32,6 @@ const Game = () => {
     }
 
     setIsLoading(true);
-    setShowHint(false);
     setFeedback("");
     setTimeLeft(15);
 
@@ -119,7 +118,6 @@ const Game = () => {
     setCurrentPuzzleIndex(0);
     setScore(0);
     setTimeLeft(15);
-    setShowHint(false);
     setFeedback("");
   };
 
@@ -128,7 +126,6 @@ const Game = () => {
     setCurrentPuzzleIndex(0);
     setScore(0);
     setTimeLeft(15);
-    setShowHint(false);
     setFeedback("");
   };
 
@@ -147,29 +144,22 @@ const Game = () => {
       const roundScore = 10 + timeBonus;
       setScore((prev) => prev + roundScore);
       setFeedback("correct");
-
-      setTimeout(() => {
-        setCurrentPuzzleIndex((prev) => prev + 1);
-      }, 1000);
     } else {
       setFeedback("incorrect");
-      setTimeout(() => setFeedback(""), 1000);
     }
   };
 
-  const handleHint = () => {
-    if (!showHint) {
-      setScore((prev) => Math.max(0, prev - 5));
-      setShowHint(true);
-    }
+  const handleNext = () => {
+    setCurrentPuzzleIndex((prev) => prev + 1);
   };
+
+  // remove unused hint handler entirely
 
   const handlePlayAgain = () => {
     setGamePhase("start");
     setCurrentPuzzleIndex(0);
     setScore(0);
     setTimeLeft(15);
-    setShowHint(false);
     setFeedback("");
   };
 
@@ -228,7 +218,7 @@ const Game = () => {
               >
                 ← Back to Menu
               </button>
-              <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
+              <h1 className="text-lg md:text-xl font-semibold text-slate-900">
                 Guess the Movie: Emoji Quiz
               </h1>
             </div>
@@ -237,11 +227,11 @@ const Game = () => {
               <div className="hidden md:block">
                 <Timer timeLeft={timeLeft} />
               </div>
-              <div className="text-slate-600 text-sm">
+              <div className="text-slate-600 text-xs md:text-sm">
                 <span className="font-medium">{currentPuzzleIndex + 1}</span> of{" "}
                 {puzzles.length}
               </div>
-              <div className="text-slate-600 text-sm">
+              <div className="text-slate-600 text-xs md:text-sm">
                 <span className="uppercase tracking-wide">Score:</span>{" "}
                 <span className="font-semibold">{score}</span>
               </div>
@@ -266,26 +256,8 @@ const Game = () => {
             currentPuzzle={currentPuzzle}
           />
 
-          {/* Hint Section */}
-          <div className="text-center mb-6">
-            <button
-              onClick={handleHint}
-              disabled={showHint}
-              className={`
-                px-5 py-3 rounded-lg font-medium transition-all duration-200 border
-                ${
-                  showHint
-                    ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
-                    : "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100"
-                }
-              `}
-            >
-              {showHint ? "Hint Used" : "Get Hint (-5 points)"}
-            </button>
-          </div>
-
           {/* Hint Display */}
-          {showHint && currentPuzzle && (
+          {currentPuzzle && (
             <div className="mb-2 p-4 bg-slate-50 rounded-xl border border-slate-200">
               <p className="text-slate-700 text-sm flex items-start gap-2">
                 <span className="text-amber-500">💡</span>
@@ -294,6 +266,18 @@ const Game = () => {
                   {currentPuzzle.hint}
                 </span>
               </p>
+            </div>
+          )}
+
+          {/* Next Button - only after answering */}
+          {feedback !== "" && (
+            <div className="text-center mt-4">
+              <button
+                onClick={handleNext}
+                className="px-6 py-2.5 rounded-lg font-medium text-sm md:text-base transition-colors duration-200 border shadow-sm bg-slate-900 text-white hover:bg-slate-800"
+              >
+                Next →
+              </button>
             </div>
           )}
         </div>

@@ -14,14 +14,14 @@ const Timer = ({ timeLeft }) => {
   };
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       {/* Circular Timer */}
       <div className="relative">
-        <svg className="w-16 h-16 transform -rotate-90">
+        <svg className="w-12 h-12 transform -rotate-90">
           {/* Background circle */}
           <circle
-            cx="32"
-            cy="32"
+            cx="28"
+            cy="28"
             r={radius}
             stroke="#e5e7eb"
             strokeWidth="4"
@@ -29,8 +29,8 @@ const Timer = ({ timeLeft }) => {
           />
           {/* Progress circle */}
           <circle
-            cx="32"
-            cy="32"
+            cx="28"
+            cy="28"
             r={radius}
             stroke="currentColor"
             strokeWidth="4"
@@ -46,7 +46,7 @@ const Timer = ({ timeLeft }) => {
         {/* Time remaining text */}
         <div className="absolute inset-0 flex items-center justify-center">
           <span
-            className={`text-base font-bold ${
+            className={`text-sm font-bold ${
               timeLeft > 10
                 ? "text-emerald-600"
                 : timeLeft > 5
@@ -58,7 +58,7 @@ const Timer = ({ timeLeft }) => {
           </span>
         </div>
       </div>
-      <span className="text-slate-600 text-sm">seconds</span>
+      <span className="text-slate-600 text-xs md:text-sm">seconds</span>
     </div>
   );
 };

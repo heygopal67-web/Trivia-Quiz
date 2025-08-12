@@ -8,23 +8,18 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
   useEffect(() => {
     if (feedback === "") {
       setSelectedAnswer("");
+      setIsSubmitting(false);
     }
   }, [feedback]);
 
   const handleAnswerSelect = (answer) => {
-    if (isSubmitting) return;
+    if (isSubmitting || feedback !== "") return;
     setSelectedAnswer(answer);
+    setIsSubmitting(true);
+    onSubmit(answer);
   };
 
-  const handleSubmit = () => {
-    if (selectedAnswer && !isSubmitting) {
-      setIsSubmitting(true);
-      onSubmit(selectedAnswer);
-
-      // Reset submitting state after a brief delay
-      setTimeout(() => setIsSubmitting(false), 1000);
-    }
-  };
+  // No explicit submit; selection triggers submit
 
   // Generate multiple choice options based on the current puzzle
   const generateOptions = () => {
@@ -63,25 +58,25 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
   const options = useMemo(() => generateOptions(), [currentPuzzle?.answer]);
 
   return (
-    <div className="mb-6">
+    <div className="mb-4">
       <div className="max-w-3xl mx-auto">
         {/* Multiple Choice Options */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
           {options.map((option, index) => (
             <button
               key={index}
               onClick={() => handleAnswerSelect(option)}
-              disabled={isSubmitting}
+              disabled={isSubmitting || feedback !== ""}
               className={`
-                p-4 md:p-6 rounded-xl font-medium text-base md:text-lg transition-all duration-200
+                p-3 md:p-4 rounded-xl font-medium text-sm md:text-base transition-all duration-200
                 border text-left shadow-sm
                 ${
-                  selectedAnswer === option
+                  selectedAnswer === option && feedback === ""
                     ? "bg-slate-900 text-white border-slate-900 shadow-md scale-[1.01]"
                     : "bg-white text-slate-900 border-slate-200 hover:bg-slate-50"
                 }
                 ${
-                  isSubmitting
+                  isSubmitting || feedback !== ""
                     ? "cursor-not-allowed opacity-50"
                     : "cursor-pointer"
                 }
@@ -89,7 +84,14 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
                   feedback === "correct" && selectedAnswer === option
                     ? "bg-emerald-600 text-white border-emerald-600"
                     : feedback === "incorrect" && selectedAnswer === option
-                    ? "bg-red-600 text-white border-red-600"
+                    ? "bg-white text-red-700 border-2 border-red-600"
+                    : ""
+                }
+                ${
+                  feedback === "incorrect" &&
+                  currentPuzzle &&
+                  option === currentPuzzle.answer
+                    ? "bg-emerald-50 text-emerald-700 border-emerald-600"
                     : ""
                 }
               `}
@@ -99,29 +101,14 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
           ))}
         </div>
 
-        {/* Submit Button */}
-        <div className="text-center">
-          <button
-            onClick={handleSubmit}
-            disabled={!selectedAnswer || isSubmitting}
-            className={`px-8 py-3 rounded-lg font-medium text-base md:text-lg transition-colors duration-200 border shadow-sm
-              ${
-                !selectedAnswer || isSubmitting
-                  ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
-                  : "bg-slate-900 text-white border-slate-900 hover:bg-slate-800"
-              }
-            `}
-          >
-            {isSubmitting ? "Checking..." : "Submit Answer"}
-          </button>
-        </div>
-
-        {/* Instructions */}
-        <div className="text-center mt-4">
-          <p className="text-slate-500 text-sm">
-            Click on an answer and then submit
-          </p>
-        </div>
+        {feedback === "incorrect" && currentPuzzle && (
+          <div className="text-center -mt-2 mb-3">
+            <span className="text-emerald-700 text-xs md:text-sm font-medium">
+              Correct answer: {currentPuzzle.answer}
+            </span>
+          </div>
+        )}
+        {/* Instructions removed per request */}
       </div>
     </div>
   );

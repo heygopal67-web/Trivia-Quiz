@@ -1,143 +1,102 @@
-# Guess the Emoji Story 🎮
+# Emoji Story Game
 
-A fun React web game where players guess movies, famous people, or historical events based on emoji sequences!
+A small React app with multiple mini‑games. currently im working on Guess the Movie, where you identify a movie, person, or event from a short emoji sequence.
 
-## 🚀 Features
+## Features
 
-- **Emoji Puzzles**: 10 challenging puzzles with emoji sequences
-- **Timer System**: 15-second countdown for each puzzle
-- **Scoring System**: 
-  - +10 points for correct answers
-  - +remaining seconds as bonus points
-  - -5 points for using hints
-- **Hint System**: Get help at the cost of 5 points
-- **Beautiful UI**: Modern design with Tailwind CSS
-- **Responsive Design**: Works on all device sizes
-- **Animations**: Smooth transitions and feedback effects
+- Four game modes: Guess the Movie, Word Scramble, Math Puzzle, Memory Game
+- Categories and 10 rounds per session for Guess the Movie
+- 15‑second timer per puzzle with a circular countdown
+- Score = 10 points + remaining seconds (per correct answer)
+- Always‑visible hint text for each puzzle
+- Background music with a mute toggle
+- Day/Night background toggle on the game menu
+- Responsive UI built with Tailwind CSS
 
-## 🛠️ Tech Stack
+## Tech stack
 
-- **React 19** - Modern React with hooks
-- **Tailwind CSS** - Utility-first CSS framework
-- **API Ninjas** - Emoji API for dynamic emoji fetching
-- **Vanilla JavaScript** - No backend required
+- React (Create React App, react‑scripts 5)
+- Tailwind CSS
+- Testing Library (for React tests)
 
-## 📋 Prerequisites
+## Requirements
 
-- Node.js (version 16 or higher)
-- npm or yarn package manager
-- API Ninjas API key (free at [api-ninjas.com](https://api-ninjas.com))
+- Node.js 16 or higher
+- npm
 
-## 🔧 Installation
+## Setup
 
-1. **Clone or download the project**
    ```bash
    cd emoji-story-game
-   ```
-
-2. **Install dependencies**
-   ```bash
    npm install
-   ```
-
-3. **Add your API key**
-   - Open `src/api.js`
-   - Replace `"YOUR_API_KEY_HERE"` with your actual API Ninjas key
-   - Save the file
-
-4. **Start the development server**
-   ```bash
    npm start
    ```
 
-5. **Open your browser**
-   - Navigate to `http://localhost:3000`
-   - Start playing!
+Open `http://localhost:3000` in your browser.
 
-## 🎯 How to Play
+## How to play (Guess the Movie)
 
-1. **Look at the emoji sequence** displayed at the top
-2. **Type your answer** in the input field
-3. **Submit your answer** before the 15-second timer runs out
-4. **Use hints** if you're stuck (costs 5 points)
-5. **Score points** based on correct answers and remaining time
-6. **Complete all puzzles** to see your final score
+1. From the menu, choose Guess the Movie.
+2. Select a category (or leave All) and press Start Game.
+3. Look at the emoji sequence and pick the correct answer before the timer ends.
+4. You earn 10 points plus the remaining seconds when correct.
+5. There are up to 10 rounds per session. Your final score is shown at the end.
 
-## 🏆 Scoring System
+## Configuration (optional)
 
-- **Correct Answer**: +10 points
-- **Time Bonus**: +remaining seconds
-- **Hint Used**: -5 points
-- **Time's Up**: +0 points
+- API key: If you have an API Ninjas key, add it in `src/api.js` to fetch emojis from the API. The game works without a key using built‑in fallbacks.
+- Assets: Images and audio are served from `public/` (for example `bg.gif`, `night.gif`, `tree.gif`, `movie.png`, `word.png`, `bgm.mp3`).
 
-## 🎨 Customization
+## Project structure (high level)
 
-### Adding New Puzzles
-Edit `src/data.js` to add more puzzles:
-```javascript
-{
-  keywords: ["your", "keywords", "here"],
-  answer: "Your Answer Here",
-  hint: "Your hint here"
-}
+```
+emoji-story-game/
+  public/          # static assets
+  src/
+    api.js         # optional API integration + fallbacks
+    data.js        # puzzle definitions (keywords, answer, hint, category)
+    components/
+      Game.js          # main game controller (modes, timer, scoring)
+      GameSelector.js  # game mode menu (includes day/night + sound toggles)
+      StartScreen.js   # start screen for Guess the Movie (category selector)
+      EmojiDisplay.js  # renders the emoji sequence
+      AnswerInput.js   # multiple‑choice answers
+      Timer.js         # circular countdown display
+      GameOver.js      # final score screen
 ```
 
-### Changing Game Settings
-Modify the timer duration, scoring, or other game mechanics in the respective component files.
+## Customization
 
-### Styling
-The app uses Tailwind CSS classes. Modify the classes in component files to change colors, spacing, and animations.
+- Puzzles: Edit `src/data.js`. Each entry contains `keywords`, `answer`, `hint`, and `category`.
+- Rounds and timer: In `src/components/Game.js`, adjust `MAX_ROUNDS` and the initial timer value (15 seconds).
+- Styling: Tailwind classes are used throughout the components.
 
-## 🚀 Building for Production
+## Available scripts
 
-To create a production build:
+- `npm start`: run the app in development mode
+- `npm test`: run tests
+- `npm run build`: build for production
+- `npm run eject`: eject CRA (irreversible)
+
+## Build and deploy
+
 ```bash
 npm run build
 ```
 
-The built files will be in the `build` folder, ready for deployment.
+The production build is created in the `build/` folder and can be deployed to any static hosting service (for example Netlify, Vercel, or GitHub Pages).
 
-## 🌐 Deployment
+## Troubleshooting
 
-Since this is a client-side only app, you can deploy it to:
-- GitHub Pages
-- Netlify
-- Vercel
-- Any static hosting service
+- Install errors: ensure Node.js 16+ and a clean install (`node_modules` removed, then `npm install`).
+- Dev server port in use: change the port (for example, in PowerShell: `$env:PORT=3001; npm start`).
+- Emoji fetching: without an API key the app uses fallbacks; with a key, verify it is set in `src/api.js` and your network allows requests to the API.
 
-## 🔍 Troubleshooting
+## License
 
-### API Key Issues
-- Ensure your API key is correctly inserted in `src/api.js`
-- Check that your API Ninjas account is active
-- The app includes fallback emojis if the API fails
+MIT
 
-### Build Issues
-- Clear `node_modules` and reinstall: `rm -rf node_modules && npm install`
-- Ensure Node.js version is 16 or higher
-- Check for any console errors in the browser
 
-### Performance Issues
-- The app is optimized for modern browsers
-- Emojis are cached after first fetch
-- Fallback emojis ensure the game always works
+thanks for reading this readme... hope you enjoyed the game and would love to know your feedback...
 
-## 📱 Browser Support
-
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
-- Mobile browsers
-
-## 🤝 Contributing
-
-Feel free to submit issues, feature requests, or pull requests to improve the game!
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
-## 🎉 Enjoy the Game!
-
-Have fun guessing emoji stories and challenge your friends to beat your high score!
+thanks again :)

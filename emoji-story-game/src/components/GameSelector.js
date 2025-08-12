@@ -43,6 +43,7 @@ const GameSelector = ({ onSelectGame }) => {
   ];
 
   const [isSoundOn, setIsSoundOn] = useState(false);
+  const [isNight, setIsNight] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const audioRef = useRef(null);
 
@@ -85,18 +86,34 @@ const GameSelector = ({ onSelectGame }) => {
     <div
       className="relative min-h-screen overflow-hidden"
       style={{
-        backgroundImage: "url(/tree.gif)",
+        backgroundImage: `url(${isNight ? "/night.gif" : "/tree.gif"})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
       {/* overlay for readability */}
-      <div className="absolute inset-0 bg-black/40" />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundColor: isNight ? "rgba(0,0,0,0.55)" : "rgba(0,0,0,0.4)",
+        }}
+      />
       {/* Decorative blurs */}
       <div className="pointer-events-none absolute -top-10 -left-10 w-64 h-64 bg-emerald-300/20 blur-3xl rounded-full" />
       <div className="pointer-events-none absolute -bottom-10 -right-10 w-72 h-72 bg-teal-300/20 blur-3xl rounded-full" />
 
-      {/* Sound toggle */}
+      {/* Night/Day and Sound toggles */}
+      <button
+        onClick={() => setIsNight((v) => !v)}
+        aria-label={
+          isNight ? "Switch to day background" : "Switch to night background"
+        }
+        className="absolute right-16 top-4 z-10 bg-black/50 text-white rounded-full p-2 backdrop-blur hover:bg-black/70 transition-colors"
+      >
+        <span className="text-xl" aria-hidden>
+          {isNight ? "☀️" : "🌙"}
+        </span>
+      </button>
       <button
         onClick={() => setIsSoundOn((v) => !v)}
         aria-label={

@@ -21,7 +21,7 @@ const EmojiDisplay = ({ emojis, feedback }) => {
 
         {/* Emoji Container - Larger and more prominent */}
         <div
-          className={`inline-block p-4 md:p-6 rounded-2xl border transition-all duration-300 ${getFeedbackClass()}`}
+          className={`inline-block p-4 md:p-6 rounded-2xl border transition-all duration-300 ${getFeedbackClass()} shadow-sm`}
         >
           <div className="flex items-center justify-center gap-5 md:gap-8 text-5xl md:text-7xl">
             {emojis.map((emoji, index) => (

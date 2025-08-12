@@ -1,6 +1,14 @@
 import React from "react";
 
-const StartScreen = ({ onStartGame, onBackToMenu, isMuted, onToggleMute }) => {
+const StartScreen = ({
+  onStartGame,
+  onBackToMenu,
+  isMuted,
+  onToggleMute,
+  selectedCategory,
+  onSelectCategory,
+  categories = ["All"],
+}) => {
   return (
     <div className="relative min-h-screen overflow-hidden p-4 md:p-6">
       <div
@@ -53,6 +61,23 @@ const StartScreen = ({ onStartGame, onBackToMenu, isMuted, onToggleMute }) => {
           <p className="text-slate-900 text-base md:text-lg">
             Lord of the Rings
           </p>
+        </div>
+
+        {/* Category Selector */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 md:gap-3">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => onSelectCategory(cat)}
+              className={`px-3 py-2 rounded-full text-sm transition-colors ring-1 backdrop-blur shadow-sm ${
+                (selectedCategory || "All") === cat
+                  ? "bg-emerald-600 text-white ring-emerald-500"
+                  : "bg-white/60 text-slate-700 ring-white/50 hover:bg-white/70"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
 
         {/* Quick Rules */}

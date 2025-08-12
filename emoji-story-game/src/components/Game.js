@@ -33,6 +33,7 @@ const Game = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [isMuted, setIsMuted] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const bgmAudioRef = useRef(null);
   const [puzzleOrder, setPuzzleOrder] = useState(() =>
@@ -40,13 +41,20 @@ const Game = () => {
   );
 
   // Helper to get the current puzzle data using the shuffled order
-  const getCurrentPuzzleData = () => {
+  const filteredPuzzles =
+    selectedCategory === "All"
+      ? puzzles
+      : puzzles.filter((p) => (p.category || "Misc") === selectedCategory);
+  const getCurrentPuzzleData = useCallback(() => {
     const orderedIndex = puzzleOrder[currentPuzzleIndex] ?? 0;
-    return puzzles[orderedIndex];
-  };
+    const source = filteredPuzzles.length > 0 ? filteredPuzzles : puzzles;
+    return source[orderedIndex % source.length];
+  }, [currentPuzzleIndex, puzzleOrder, filteredPuzzles]);
 
   const loadPuzzle = useCallback(async () => {
-    if (currentPuzzleIndex >= puzzles.length) {
+    const total =
+      filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
+    if (currentPuzzleIndex >= total) {
       setGamePhase("gameOver");
       return;
     }
@@ -100,7 +108,7 @@ const Game = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [currentPuzzleIndex, puzzleOrder]);
+  }, [currentPuzzleIndex, puzzleOrder, selectedCategory, filteredPuzzles.length, getCurrentPuzzleData]);
 
   useEffect(() => {
     if (gamePhase === "playing" && currentGame === "emoji-story") {
@@ -168,7 +176,9 @@ const Game = () => {
   const handleGameSelect = (gameId) => {
     setCurrentGame(gameId);
     if (gameId === "emoji-story") {
-      setPuzzleOrder(shuffleIndices(puzzles.length));
+      const total =
+        filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
+      setPuzzleOrder(shuffleIndices(total));
       setGamePhase("start");
     } else {
       setGamePhase("playing");
@@ -190,7 +200,9 @@ const Game = () => {
 
   const handleStartGame = () => {
     setGamePhase("playing");
-    setPuzzleOrder(shuffleIndices(puzzles.length));
+    const total =
+      filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
+    setPuzzleOrder(shuffleIndices(total));
     setCurrentPuzzleIndex(0);
     setScore(0);
     setTimeLeft(15);
@@ -226,12 +238,25 @@ const Game = () => {
 
   const handlePlayAgain = () => {
     setGamePhase("start");
-    setPuzzleOrder(shuffleIndices(puzzles.length));
+    const total =
+      filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
+    setPuzzleOrder(shuffleIndices(total));
     setCurrentPuzzleIndex(0);
     setScore(0);
     setTimeLeft(15);
     setFeedback("");
   };
+
+  // If category changes while on start screen, reset order and index for a clean start
+  useEffect(() => {
+    if (currentGame === "emoji-story" && gamePhase === "start") {
+      const total =
+        filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
+      setPuzzleOrder(shuffleIndices(total));
+      setCurrentPuzzleIndex(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
 
   // Render different phases and games
   if (gamePhase === "menu") {
@@ -257,6 +282,12 @@ const Game = () => {
         onBackToMenu={handleBackToMenu}
         isMuted={isMuted}
         onToggleMute={toggleMute}
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+        categories={[
+          "All",
+          ...Array.from(new Set(puzzles.map((p) => p.category || "Misc"))),
+        ]}
       />
     );
   }
@@ -316,7 +347,10 @@ const Game = () => {
                 </div>
                 <div className="text-slate-800 text-xs md:text-sm px-2 py-1 rounded-full bg-white/60 backdrop-blur ring-1 ring-white/50">
                   <span className="font-medium">{currentPuzzleIndex + 1}</span>{" "}
-                  / {puzzles.length}
+                  /{" "}
+                  {filteredPuzzles.length > 0
+                    ? filteredPuzzles.length
+                    : puzzles.length}
                 </div>
                 <div className="text-emerald-900 text-xs md:text-sm px-2 py-1 rounded-full bg-emerald-50/80 backdrop-blur ring-1 ring-emerald-200/70">
                   <span className="uppercase tracking-wide">Score:</span>{" "}

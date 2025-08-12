@@ -1,42 +1,64 @@
-import React from 'react';
+import React from "react";
 
 const Timer = ({ timeLeft }) => {
   const progress = (timeLeft / 15) * 100;
-  
+  const radius = 30;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDasharray = circumference;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+
   const getBarColor = () => {
-    if (timeLeft > 10) return 'bg-emerald-400';
-    if (timeLeft > 5) return 'bg-amber-400';
-    return 'bg-red-400';
+    if (timeLeft > 10) return "stroke-emerald-500";
+    if (timeLeft > 5) return "stroke-amber-500";
+    return "stroke-red-500";
   };
 
   return (
-    <div className="mb-8">
-      <div className="flex justify-between items-center mb-3">
-        <span className="text-slate-300 text-sm font-medium uppercase tracking-wider">Time</span>
-        <span className={`text-2xl font-light ${
-          timeLeft > 10 ? 'text-emerald-400' : 
-          timeLeft > 5 ? 'text-amber-400' : 'text-red-400'
-        }`}>
-          {timeLeft}s
-        </span>
-      </div>
-      
-      {/* Progress Bar */}
-      <div className="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
-        <div
-          className={`h-full transition-all duration-1000 ease-out ${getBarColor()}`}
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-      
-      {/* Time warning */}
-      {timeLeft <= 5 && (
-        <div className="text-center mt-2">
-          <span className="text-red-400 text-xs font-medium">
-            Time running out
+    <div className="flex items-center gap-3">
+      {/* Circular Timer */}
+      <div className="relative">
+        <svg className="w-16 h-16 transform -rotate-90">
+          {/* Background circle */}
+          <circle
+            cx="32"
+            cy="32"
+            r={radius}
+            stroke="#e5e7eb"
+            strokeWidth="4"
+            fill="transparent"
+          />
+          {/* Progress circle */}
+          <circle
+            cx="32"
+            cy="32"
+            r={radius}
+            stroke="currentColor"
+            strokeWidth="4"
+            fill="transparent"
+            className={getBarColor()}
+            strokeDasharray={strokeDasharray}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            style={{ transition: "stroke-dashoffset 1s ease-out" }}
+          />
+        </svg>
+
+        {/* Time remaining text */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span
+            className={`text-base font-bold ${
+              timeLeft > 10
+                ? "text-emerald-600"
+                : timeLeft > 5
+                ? "text-amber-600"
+                : "text-red-600"
+            }`}
+          >
+            {timeLeft}
           </span>
         </div>
-      )}
+      </div>
+      <span className="text-slate-600 text-sm">seconds</span>
     </div>
   );
 };

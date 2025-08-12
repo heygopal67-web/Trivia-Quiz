@@ -63,8 +63,8 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
   const options = useMemo(() => generateOptions(), [currentPuzzle?.answer]);
 
   return (
-    <div className="mb-8">
-      <div className="max-w-2xl mx-auto">
+    <div className="mb-6">
+      <div className="max-w-3xl mx-auto">
         {/* Multiple Choice Options */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           {options.map((option, index) => (
@@ -73,23 +73,23 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
               onClick={() => handleAnswerSelect(option)}
               disabled={isSubmitting}
               className={`
-                p-6 rounded-xl font-medium text-lg transition-all duration-200
-                border-2 text-left
+                p-4 md:p-6 rounded-xl font-medium text-base md:text-lg transition-all duration-200
+                border text-left shadow-sm
                 ${
                   selectedAnswer === option
-                    ? "bg-white text-slate-900 border-white shadow-lg scale-105"
-                    : "bg-white/10 text-white border-white/20 hover:bg-white/20 hover:border-white/40"
+                    ? "bg-slate-900 text-white border-slate-900 shadow-md scale-[1.01]"
+                    : "bg-white text-slate-900 border-slate-200 hover:bg-slate-50"
                 }
                 ${
                   isSubmitting
                     ? "cursor-not-allowed opacity-50"
-                    : "cursor-pointer hover:scale-105"
+                    : "cursor-pointer"
                 }
                 ${
                   feedback === "correct" && selectedAnswer === option
-                    ? "bg-emerald-500/20 border-emerald-400 text-emerald-400"
+                    ? "bg-emerald-600 text-white border-emerald-600"
                     : feedback === "incorrect" && selectedAnswer === option
-                    ? "bg-red-500/20 border-red-400 text-red-400"
+                    ? "bg-red-600 text-white border-red-600"
                     : ""
                 }
               `}
@@ -104,12 +104,11 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
           <button
             onClick={handleSubmit}
             disabled={!selectedAnswer || isSubmitting}
-            className={`
-              px-12 py-4 rounded-xl font-medium text-lg transition-all duration-200
+            className={`px-8 py-3 rounded-lg font-medium text-base md:text-lg transition-colors duration-200 border shadow-sm
               ${
                 !selectedAnswer || isSubmitting
-                  ? "bg-slate-600 text-slate-400 cursor-not-allowed"
-                  : "bg-white text-slate-900 hover:bg-slate-100 hover:scale-105"
+                  ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
+                  : "bg-slate-900 text-white border-slate-900 hover:bg-slate-800"
               }
             `}
           >
@@ -119,7 +118,7 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
 
         {/* Instructions */}
         <div className="text-center mt-4">
-          <p className="text-slate-400 text-sm">
+          <p className="text-slate-500 text-sm">
             Click on an answer and then submit
           </p>
         </div>

@@ -43,12 +43,14 @@ const GameSelector = ({ onSelectGame }) => {
   ];
 
   const [isSoundOn, setIsSoundOn] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
     const audio = new Audio("/bgm.mp3");
     audio.loop = true;
     audio.volume = 0.3;
+    audio.muted = true; // start muted until interaction
     audioRef.current = audio;
     return () => {
       try {
@@ -62,17 +64,28 @@ const GameSelector = ({ onSelectGame }) => {
     const audio = audioRef.current;
     if (!audio) return;
     if (isSoundOn) {
-      audio.play().catch(() => {});
+      audio.muted = false;
+      audio
+        .play()
+        .then(() => setHasStarted(true))
+        .catch(() => {});
     } else {
-      audio.pause();
+      // keep audio ready; mute instead of stopping for instant unmute
+      audio.muted = true;
+      if (!hasStarted) {
+        audio
+          .play()
+          .then(() => audio.pause())
+          .catch(() => {});
+      }
     }
-  }, [isSoundOn]);
+  }, [isSoundOn, hasStarted]);
 
   return (
     <div
       className="relative min-h-screen overflow-hidden"
       style={{
-        backgroundImage: "url(/bg.gif)",
+        backgroundImage: "url(/tree.gif)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -92,7 +105,7 @@ const GameSelector = ({ onSelectGame }) => {
         className="absolute right-4 top-4 z-10 bg-black/50 text-white rounded-full p-2 backdrop-blur hover:bg-black/70 transition-colors"
       >
         <span className="text-xl" aria-hidden>
-          {isSoundOn ? "🔊" : "🔈"}
+          {isSoundOn ? "🔊" : "🔇"}
         </span>
       </button>
 
@@ -146,5 +159,4 @@ const GameSelector = ({ onSelectGame }) => {
     </div>
   );
 };
-
 export default GameSelector;

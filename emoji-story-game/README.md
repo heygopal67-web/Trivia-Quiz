@@ -6,6 +6,14 @@ A small React app with multiple mini‑games. currently im working on Guess the 
 
 - Four game modes: Guess the Movie, Word Scramble (under work), Math Puzzle (under work), Memory Game(under work)..
 
+## How to play (Guess the Movie)
+
+1. From the menu, choose Guess the Movie.
+2. Select a category (or leave All) and press Start Game.
+3. Look at the emoji sequence and pick the correct answer before the timer ends.
+4. You earn 10 points plus the remaining seconds when correct.
+5. There are up to 10 rounds per session. Your final score is shown at the end.
+
 ## Tech stack
 
 - React (Create React App, react‑scripts 5)
@@ -27,13 +35,6 @@ A small React app with multiple mini‑games. currently im working on Guess the 
 
 Open `http://localhost:3000` in your browser.
 
-## How to play (Guess the Movie)
-
-1. From the menu, choose Guess the Movie.
-2. Select a category (or leave All) and press Start Game.
-3. Look at the emoji sequence and pick the correct answer before the timer ends.
-4. You earn 10 points plus the remaining seconds when correct.
-5. There are up to 10 rounds per session. Your final score is shown at the end.
 
 ## Configuration (optional)
 

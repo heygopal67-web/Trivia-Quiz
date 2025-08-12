@@ -18,6 +18,7 @@ const GameSelector = ({ onSelectGame }) => {
       title: "Word Scramble",
       description: "Unscramble letters to form meaningful words",
       icon: "🔤",
+      image: "/word.png",
       color: "from-blue-500 to-indigo-500",
       bgColor: "bg-blue-500/10",
       borderColor: "border-blue-500/20",
@@ -170,7 +171,7 @@ const GameSelector = ({ onSelectGame }) => {
                     />
                   ) : (
                     <span className="text-4xl md:text-5xl" aria-hidden>
-                  {game.icon}
+                      {game.icon}
                     </span>
                   )}
                 </div>

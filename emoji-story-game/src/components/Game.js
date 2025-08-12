@@ -214,7 +214,7 @@ const Game = () => {
             <div className="flex items-center gap-3">
               <button
                 onClick={handleBackToMenu}
-                className="px-3 py-2 text-slate-600 hover:text-slate-900 transition-colors text-sm"
+                className="px-3 py-2 text-emerald-700 hover:text-emerald-900 transition-colors text-sm"
               >
                 ← Back to Menu
               </button>
@@ -231,7 +231,7 @@ const Game = () => {
                 <span className="font-medium">{currentPuzzleIndex + 1}</span> of{" "}
                 {puzzles.length}
               </div>
-              <div className="text-slate-600 text-xs md:text-sm">
+              <div className="text-emerald-800 text-xs md:text-sm">
                 <span className="uppercase tracking-wide">Score:</span>{" "}
                 <span className="font-semibold">{score}</span>
               </div>

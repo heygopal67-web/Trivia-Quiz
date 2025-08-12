@@ -72,7 +72,7 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
                 border text-left shadow-sm
                 ${
                   selectedAnswer === option && feedback === ""
-                    ? "bg-slate-900 text-white border-slate-900 shadow-md scale-[1.01]"
+                    ? "bg-emerald-700 text-white border-emerald-700 shadow-md scale-[1.01]"
                     : "bg-white text-slate-900 border-slate-200 hover:bg-slate-50"
                 }
                 ${

@@ -8,7 +8,7 @@ const Timer = ({ timeLeft }) => {
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   const getBarColor = () => {
-    if (timeLeft > 10) return "stroke-emerald-500";
+    if (timeLeft > 10) return "stroke-emerald-600";
     if (timeLeft > 5) return "stroke-amber-500";
     return "stroke-red-500";
   };
@@ -48,7 +48,7 @@ const Timer = ({ timeLeft }) => {
           <span
             className={`text-sm font-bold ${
               timeLeft > 10
-                ? "text-emerald-600"
+                ? "text-emerald-700"
                 : timeLeft > 5
                 ? "text-amber-600"
                 : "text-red-600"

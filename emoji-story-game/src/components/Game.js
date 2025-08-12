@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { puzzles } from '../data';
 import { fetchEmojisForKeywords } from '../api';
+import StartScreen from './StartScreen';
 import Timer from './Timer';
 import EmojiDisplay from './EmojiDisplay';
 import AnswerInput from './AnswerInput';
 import GameOver from './GameOver';
 
 const Game = () => {
+  const [gamePhase, setGamePhase] = useState('start'); // 'start', 'playing', 'gameOver'
   const [currentPuzzleIndex, setCurrentPuzzleIndex] = useState(0);
   const [currentPuzzle, setCurrentPuzzle] = useState(null);
   const [currentEmojis, setCurrentEmojis] = useState([]);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(15);
-  const [gameState, setGameState] = useState('playing'); // 'playing', 'gameOver'
   const [showHint, setShowHint] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState(''); // 'correct', 'incorrect', ''
 
   const currentPuzzleData = puzzles[currentPuzzleIndex];
@@ -22,7 +23,7 @@ const Game = () => {
   // Load puzzle and fetch emojis
   const loadPuzzle = useCallback(async () => {
     if (currentPuzzleIndex >= puzzles.length) {
-      setGameState('gameOver');
+      setGamePhase('gameOver');
       return;
     }
 
@@ -59,14 +60,16 @@ const Game = () => {
     }
   }, [currentPuzzleIndex, currentPuzzleData]);
 
-  // Load puzzle on mount and when puzzle index changes
+  // Load puzzle when playing phase starts
   useEffect(() => {
-    loadPuzzle();
-  }, [loadPuzzle]);
+    if (gamePhase === 'playing') {
+      loadPuzzle();
+    }
+  }, [gamePhase, loadPuzzle]);
 
   // Timer countdown
   useEffect(() => {
-    if (gameState !== 'playing' || isLoading) return;
+    if (gamePhase !== 'playing' || isLoading) return;
 
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -80,7 +83,16 @@ const Game = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [gameState, isLoading]);
+  }, [gamePhase, isLoading]);
+
+  const handleStartGame = () => {
+    setGamePhase('playing');
+    setCurrentPuzzleIndex(0);
+    setScore(0);
+    setTimeLeft(15);
+    setShowHint(false);
+    setFeedback('');
+  };
 
   const handleTimeUp = () => {
     // Move to next puzzle without scoring
@@ -118,15 +130,20 @@ const Game = () => {
   };
 
   const handlePlayAgain = () => {
+    setGamePhase('start');
     setCurrentPuzzleIndex(0);
     setScore(0);
-    setGameState('playing');
     setTimeLeft(15);
     setShowHint(false);
     setFeedback('');
   };
 
-  if (gameState === 'gameOver') {
+  // Render different phases
+  if (gamePhase === 'start') {
+    return <StartScreen onStartGame={handleStartGame} />;
+  }
+
+  if (gamePhase === 'gameOver') {
     return <GameOver score={score} onPlayAgain={handlePlayAgain} />;
   }
 

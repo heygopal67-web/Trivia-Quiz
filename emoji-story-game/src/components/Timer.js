@@ -2,7 +2,7 @@ import React from "react";
 
 const Timer = ({ timeLeft }) => {
   const progress = (timeLeft / 15) * 100;
-  const radius = 30;
+  const radius = 18; // fits within a 40x40 viewBox with 4px stroke
   const circumference = 2 * Math.PI * radius;
   const strokeDasharray = circumference;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
@@ -17,11 +17,11 @@ const Timer = ({ timeLeft }) => {
     <div className="flex items-center gap-2">
       {/* Circular Timer */}
       <div className="relative">
-        <svg className="w-12 h-12 transform -rotate-90">
+        <svg viewBox="0 0 40 40" className="w-14 h-14 transform -rotate-90">
           {/* Background circle */}
           <circle
-            cx="28"
-            cy="28"
+            cx="20"
+            cy="20"
             r={radius}
             stroke="#e5e7eb"
             strokeWidth="4"
@@ -29,8 +29,8 @@ const Timer = ({ timeLeft }) => {
           />
           {/* Progress circle */}
           <circle
-            cx="28"
-            cy="28"
+            cx="20"
+            cy="20"
             r={radius}
             stroke="currentColor"
             strokeWidth="4"

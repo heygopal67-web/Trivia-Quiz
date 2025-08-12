@@ -24,10 +24,10 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
   // Generate multiple choice options based on the current puzzle
   const generateOptions = () => {
     if (!currentPuzzle) return [];
-
+    
     const correctAnswer = currentPuzzle.answer;
     const options = [correctAnswer];
-
+    
     // Add some common wrong answers based on the puzzle type
     const wrongAnswers = [
       "The Matrix",
@@ -41,16 +41,16 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
       "Superman",
       "Captain America",
     ];
-
+    
     // Filter out the correct answer and add 3 random wrong answers
     const filteredWrongAnswers = wrongAnswers.filter(
       (answer) => answer !== correctAnswer
     );
-
+    
     // Shuffle and take first 3
     const shuffled = filteredWrongAnswers.sort(() => 0.5 - Math.random());
     options.push(...shuffled.slice(0, 3));
-
+    
     // Shuffle all options
     return options.sort(() => 0.5 - Math.random());
   };
@@ -67,8 +67,7 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
               key={index}
               onClick={() => handleAnswerSelect(option)}
               disabled={isSubmitting || feedback !== ""}
-              className={`
-                p-3 md:p-4 rounded-xl font-medium text-sm md:text-base transition-all duration-200
+              className={`relative p-3 md:p-4 rounded-xl font-medium text-sm md:text-base transition-all duration-200
                 border text-left shadow-sm
                 ${
                   selectedAnswer === option && feedback === ""
@@ -97,18 +96,40 @@ const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
               `}
             >
               {option}
+              {feedback === "correct" && selectedAnswer === option && (
+                <span className="absolute right-3 top-2 text-emerald-600 text-lg">
+                  ✓
+                </span>
+              )}
+              {feedback === "incorrect" && selectedAnswer === option && (
+                <span className="absolute right-3 top-2 text-red-600 text-lg">
+                  ✕
+                </span>
+              )}
+              {feedback === "incorrect" &&
+                currentPuzzle &&
+                option === currentPuzzle.answer && (
+                  <span className="absolute right-3 top-2 text-emerald-600 text-lg">
+                    ✓
+                  </span>
+                )}
             </button>
           ))}
         </div>
-
+        
         {feedback === "incorrect" && currentPuzzle && (
           <div className="text-center -mt-2 mb-3">
             <span className="text-emerald-700 text-xs md:text-sm font-medium">
               Correct answer: {currentPuzzle.answer}
             </span>
-          </div>
+        </div>
         )}
-        {/* Instructions removed per request */}
+        {/* Keyboard hint (subtle) */}
+        <div className="text-center mt-2">
+          <p className="text-slate-400 text-[11px] md:text-xs">
+            Tip: press 1–4 to select
+          </p>
+        </div>
       </div>
     </div>
   );

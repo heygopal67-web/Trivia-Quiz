@@ -1,6 +1,6 @@
 import React from "react";
 
-const EmojiDisplay = ({ emojis, feedback }) => {
+const EmojiDisplay = ({ emojis, feedback, minimal = false }) => {
   const getFeedbackClass = () => {
     switch (feedback) {
       case "correct":
@@ -15,25 +15,38 @@ const EmojiDisplay = ({ emojis, feedback }) => {
   return (
     <div className="mb-6">
       <div className="text-center">
-        <h2 className="text-slate-600 text-sm font-medium mb-4 tracking-wide">
+        <h2 className="text-slate-600 text-sm font-medium mb-3 tracking-wide">
           What does this represent?
         </h2>
 
-        {/* Emoji Container - Larger and more prominent */}
-        <div
-          className={`inline-block p-4 md:p-6 rounded-2xl border transition-all duration-300 ${getFeedbackClass()} shadow-sm`}
-        >
-          <div className="flex items-center justify-center gap-5 md:gap-8 text-5xl md:text-7xl">
+        {/* Emoji Container */}
+        {minimal ? (
+          <div className="flex items-center justify-center gap-4 md:gap-6 text-5xl md:text-6xl">
             {emojis.map((emoji, index) => (
               <span
                 key={index}
-                className="transition-transform duration-200 hover:scale-110"
+                className="transition-transform duration-200 hover:scale-110 will-change-transform"
               >
                 {emoji}
               </span>
             ))}
           </div>
-        </div>
+        ) : (
+          <div
+            className={`inline-block p-4 md:p-6 rounded-2xl border transition-all duration-300 ${getFeedbackClass()} shadow-sm`}
+          >
+            <div className="flex items-center justify-center gap-5 md:gap-8 text-5xl md:text-7xl">
+              {emojis.map((emoji, index) => (
+                <span
+                  key={index}
+                  className="transition-transform duration-200 hover:scale-110 will-change-transform"
+                >
+                  {emoji}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Feedback Message */}
         {feedback === "correct" && (

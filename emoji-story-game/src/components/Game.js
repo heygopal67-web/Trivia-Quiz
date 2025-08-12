@@ -216,67 +216,86 @@ const Game = () => {
 
   // Render Emoji Story Game
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
-      <div className="max-w-2xl mx-auto">
-        {/* Header with Back Button */}
-        <div className="text-center mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <button
-              onClick={handleBackToMenu}
-              className="px-4 py-2 text-slate-400 hover:text-white transition-colors duration-200 text-sm"
-            >
-              ← Back to Menu
-            </button>
-            <div className="text-slate-400 text-sm uppercase tracking-wider">
-              Score: {score}
+    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-slate-200">
+        {/* Header */}
+        <div className="px-4 md:px-6 py-4 border-b border-slate-200">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleBackToMenu}
+                className="px-3 py-2 text-slate-600 hover:text-slate-900 transition-colors text-sm"
+              >
+                ← Back to Menu
+              </button>
+              <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
+                Guess the Movie: Emoji Quiz
+              </h1>
+            </div>
+
+            <div className="flex items-center gap-6">
+              <div className="hidden md:block">
+                <Timer timeLeft={timeLeft} />
+              </div>
+              <div className="text-slate-600 text-sm">
+                <span className="font-medium">{currentPuzzleIndex + 1}</span> of{" "}
+                {puzzles.length}
+              </div>
+              <div className="text-slate-600 text-sm">
+                <span className="uppercase tracking-wide">Score:</span>{" "}
+                <span className="font-semibold">{score}</span>
+              </div>
             </div>
           </div>
-          <h1 className="text-3xl font-light text-white mb-2">
-            Guess the Emoji Story
-          </h1>
         </div>
 
-        {/* Timer */}
-        <Timer timeLeft={timeLeft} />
-
-        {/* Emoji Display */}
-        <EmojiDisplay emojis={currentEmojis} feedback={feedback} />
-
-        {/* Answer Input */}
-        <AnswerInput onSubmit={handleAnswerSubmit} feedback={feedback} />
-
-        {/* Hint Section */}
-        <div className="text-center mb-8">
-          <button
-            onClick={handleHint}
-            disabled={showHint}
-            className={`
-              px-6 py-3 rounded-xl font-medium transition-all duration-200
-              ${
-                showHint
-                  ? "bg-slate-600 text-slate-400 cursor-not-allowed"
-                  : "bg-amber-500/20 text-amber-400 border border-amber-400/30 hover:bg-amber-500/30"
-              }
-            `}
-          >
-            {showHint ? "Hint Used" : "Get Hint (-5 points)"}
-          </button>
-        </div>
-
-        {/* Hint Display */}
-        {showHint && currentPuzzle && (
-          <div className="mb-8 p-4 bg-amber-500/10 rounded-xl border border-amber-400/20">
-            <p className="text-amber-300 text-center text-sm">
-              <span className="font-medium">Hint:</span> {currentPuzzle.hint}
-            </p>
+        {/* Content */}
+        <div className="px-4 md:px-6 py-6">
+          {/* Timer (mobile) */}
+          <div className="md:hidden mb-4">
+            <Timer timeLeft={timeLeft} />
           </div>
-        )}
 
-        {/* Progress */}
-        <div className="text-center">
-          <p className="text-slate-500 text-xs uppercase tracking-wider">
-            Puzzle {currentPuzzleIndex + 1} of {puzzles.length}
-          </p>
+          {/* Emoji Display */}
+          <EmojiDisplay emojis={currentEmojis} feedback={feedback} />
+
+          {/* Answer Input */}
+          <AnswerInput
+            onSubmit={handleAnswerSubmit}
+            feedback={feedback}
+            currentPuzzle={currentPuzzle}
+          />
+
+          {/* Hint Section */}
+          <div className="text-center mb-6">
+            <button
+              onClick={handleHint}
+              disabled={showHint}
+              className={`
+                px-5 py-3 rounded-lg font-medium transition-all duration-200 border
+                ${
+                  showHint
+                    ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
+                    : "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100"
+                }
+              `}
+            >
+              {showHint ? "Hint Used" : "Get Hint (-5 points)"}
+            </button>
+          </div>
+
+          {/* Hint Display */}
+          {showHint && currentPuzzle && (
+            <div className="mb-2 p-4 bg-slate-50 rounded-xl border border-slate-200">
+              <p className="text-slate-700 text-sm flex items-start gap-2">
+                <span className="text-amber-500">💡</span>
+                <span>
+                  <span className="font-medium">Hint:</span>{" "}
+                  {currentPuzzle.hint}
+                </span>
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

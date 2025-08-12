@@ -1,83 +1,128 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 
-const AnswerInput = ({ onSubmit, feedback }) => {
-  const [answer, setAnswer] = useState('');
+const AnswerInput = ({ onSubmit, feedback, currentPuzzle }) => {
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Clear input when feedback changes (new puzzle loaded)
+  // Clear selection when feedback changes (new puzzle loaded)
   useEffect(() => {
-    if (feedback === '') {
-      setAnswer('');
+    if (feedback === "") {
+      setSelectedAnswer("");
     }
   }, [feedback]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (answer.trim() && !isSubmitting) {
+  const handleAnswerSelect = (answer) => {
+    if (isSubmitting) return;
+    setSelectedAnswer(answer);
+  };
+
+  const handleSubmit = () => {
+    if (selectedAnswer && !isSubmitting) {
       setIsSubmitting(true);
-      onSubmit(answer.trim());
-      
+      onSubmit(selectedAnswer);
+
       // Reset submitting state after a brief delay
       setTimeout(() => setIsSubmitting(false), 1000);
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSubmit(e);
-    }
+  // Generate multiple choice options based on the current puzzle
+  const generateOptions = () => {
+    if (!currentPuzzle) return [];
+
+    const correctAnswer = currentPuzzle.answer;
+    const options = [correctAnswer];
+
+    // Add some common wrong answers based on the puzzle type
+    const wrongAnswers = [
+      "The Matrix",
+      "Blade Runner",
+      "Honey, I Shrunk the Kids",
+      "Jurassic Park",
+      "Star Wars",
+      "Batman",
+      "Iron Man",
+      "Harry Potter",
+      "Superman",
+      "Captain America",
+    ];
+
+    // Filter out the correct answer and add 3 random wrong answers
+    const filteredWrongAnswers = wrongAnswers.filter(
+      (answer) => answer !== correctAnswer
+    );
+
+    // Shuffle and take first 3
+    const shuffled = filteredWrongAnswers.sort(() => 0.5 - Math.random());
+    options.push(...shuffled.slice(0, 3));
+
+    // Shuffle all options
+    return options.sort(() => 0.5 - Math.random());
   };
 
+  const options = useMemo(() => generateOptions(), [currentPuzzle?.answer]);
+
   return (
-    <div className="mb-6">
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-        <div className="flex flex-col space-y-4">
-          <label htmlFor="answer" className="text-white text-lg font-semibold text-center">
-            Your Answer:
-          </label>
-          
-          <input
-            type="text"
-            id="answer"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Type your answer here..."
-            disabled={isSubmitting}
-            className={`
-              px-4 py-3 text-lg rounded-lg border-2 transition-all duration-200
-              focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-              ${isSubmitting 
-                ? 'bg-gray-300 cursor-not-allowed' 
-                : 'bg-white hover:bg-gray-50 focus:bg-white'
-              }
-              ${feedback === 'correct' ? 'border-green-400' : 
-                feedback === 'incorrect' ? 'border-red-400' : 'border-gray-300'
-              }
-            `}
-          />
-          
+    <div className="mb-8">
+      <div className="max-w-2xl mx-auto">
+        {/* Multiple Choice Options */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {options.map((option, index) => (
+            <button
+              key={index}
+              onClick={() => handleAnswerSelect(option)}
+              disabled={isSubmitting}
+              className={`
+                p-6 rounded-xl font-medium text-lg transition-all duration-200
+                border-2 text-left
+                ${
+                  selectedAnswer === option
+                    ? "bg-white text-slate-900 border-white shadow-lg scale-105"
+                    : "bg-white/10 text-white border-white/20 hover:bg-white/20 hover:border-white/40"
+                }
+                ${
+                  isSubmitting
+                    ? "cursor-not-allowed opacity-50"
+                    : "cursor-pointer hover:scale-105"
+                }
+                ${
+                  feedback === "correct" && selectedAnswer === option
+                    ? "bg-emerald-500/20 border-emerald-400 text-emerald-400"
+                    : feedback === "incorrect" && selectedAnswer === option
+                    ? "bg-red-500/20 border-red-400 text-red-400"
+                    : ""
+                }
+              `}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+
+        {/* Submit Button */}
+        <div className="text-center">
           <button
-            type="submit"
-            disabled={!answer.trim() || isSubmitting}
+            onClick={handleSubmit}
+            disabled={!selectedAnswer || isSubmitting}
             className={`
-              px-6 py-3 rounded-lg font-semibold text-lg transition-all duration-200
-              ${!answer.trim() || isSubmitting
-                ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 text-white hover:scale-105 transform'
+              px-12 py-4 rounded-xl font-medium text-lg transition-all duration-200
+              ${
+                !selectedAnswer || isSubmitting
+                  ? "bg-slate-600 text-slate-400 cursor-not-allowed"
+                  : "bg-white text-slate-900 hover:bg-slate-100 hover:scale-105"
               }
             `}
           >
-            {isSubmitting ? 'Submitting...' : 'Submit Answer'}
+            {isSubmitting ? "Checking..." : "Submit Answer"}
           </button>
         </div>
-      </form>
-      
-      {/* Instructions */}
-      <div className="text-center mt-4">
-        <p className="text-blue-200 text-sm">
-          Press Enter or click Submit to answer
-        </p>
+
+        {/* Instructions */}
+        <div className="text-center mt-4">
+          <p className="text-slate-400 text-sm">
+            Click on an answer and then submit
+          </p>
+        </div>
       </div>
     </div>
   );

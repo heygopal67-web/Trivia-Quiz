@@ -233,12 +233,22 @@ const Game = () => {
       <StartScreen
         onStartGame={handleStartGame}
         onBackToMenu={handleBackToMenu}
+        isMuted={isMuted}
+        onToggleMute={toggleMute}
       />
     );
   }
 
   if (gamePhase === "gameOver") {
-    return <GameOver score={score} onPlayAgain={handlePlayAgain} />;
+    return (
+      <GameOver
+        score={score}
+        onPlayAgain={handlePlayAgain}
+        onBackToMenu={handleBackToMenu}
+        isMuted={isMuted}
+        onToggleMute={toggleMute}
+      />
+    );
   }
 
   // Keep rendering the game UI while loading next puzzle to avoid jarring transitions

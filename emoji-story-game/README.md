@@ -2,16 +2,9 @@
 
 A small React app with multiple mini‑games. currently im working on Guess the Movie, where you identify a movie, person, or event from a short emoji sequence.
 
-## Features
+## Games
 
-- Four game modes: Guess the Movie, Word Scramble, Math Puzzle, Memory Game
-- Categories and 10 rounds per session for Guess the Movie
-- 15‑second timer per puzzle with a circular countdown
-- Score = 10 points + remaining seconds (per correct answer)
-- Always‑visible hint text for each puzzle
-- Background music with a mute toggle
-- Day/Night background toggle on the game menu
-- Responsive UI built with Tailwind CSS
+- Four game modes: Guess the Movie, Word Scramble (under work), Math Puzzle (under work), Memory Game(under work)..
 
 ## Tech stack
 

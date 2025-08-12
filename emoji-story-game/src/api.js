@@ -1,6 +1,6 @@
 // API utility for fetching emojis
 // TODO: INSERT YOUR API NINJAS API KEY HERE
-const API_KEY = "YOUR_API_KEY_HERE";
+const API_KEY = "wLBJdBxQo/+mJen0VMYsZA==jwtCCpAhHs3HTQMt";
 const BASE_URL = "https://api.api-ninjas.com/v1/emoji";
 
 // Fetch emoji for a given keyword

@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const GameSelector = ({ onSelectGame }) => {
   const games = [
     {
       id: "emoji-story",
-      title: "Guess the Emoji Story",
+      title: "Guess the Movie",
       description:
         "Decode emoji sequences to reveal movies, people, and events",
       icon: "🎭",
-      image: "/guessmovie.png",
+      image: "/movie.png",
       color: "from-emerald-500 to-teal-500",
       bgColor: "bg-emerald-500/10",
       borderColor: "border-emerald-500/20",
@@ -42,20 +42,72 @@ const GameSelector = ({ onSelectGame }) => {
     },
   ];
 
+  const [isSoundOn, setIsSoundOn] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const audio = new Audio("/bgm.mp3");
+    audio.loop = true;
+    audio.volume = 0.3;
+    audioRef.current = audio;
+    return () => {
+      try {
+        audio.pause();
+      } catch (_) {}
+      audioRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isSoundOn) {
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+    }
+  }, [isSoundOn]);
+
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-4xl mx-auto">
+    <div
+      className="relative min-h-screen overflow-hidden"
+      style={{
+        backgroundImage: "url(/bg.gif)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* overlay for readability */}
+      <div className="absolute inset-0 bg-black/40" />
+      {/* Decorative blurs */}
+      <div className="pointer-events-none absolute -top-10 -left-10 w-64 h-64 bg-emerald-300/20 blur-3xl rounded-full" />
+      <div className="pointer-events-none absolute -bottom-10 -right-10 w-72 h-72 bg-teal-300/20 blur-3xl rounded-full" />
+
+      {/* Sound toggle */}
+      <button
+        onClick={() => setIsSoundOn((v) => !v)}
+        aria-label={
+          isSoundOn ? "Mute background sound" : "Play background sound"
+        }
+        className="absolute right-4 top-4 z-10 bg-black/50 text-white rounded-full p-2 backdrop-blur hover:bg-black/70 transition-colors"
+      >
+        <span className="text-xl" aria-hidden>
+          {isSoundOn ? "🔊" : "🔈"}
+        </span>
+      </button>
+
+      <div className="relative z-0 max-w-5xl mx-auto p-6 md:p-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-2 tracking-tight">
-            Game Center
+        <div className="text-center mb-8 md:mb-10">
+          <h1 className="text-3xl md:text-4xl font-semibold text-white tracking-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
+            Pick a Game
           </h1>
-          <p className="text-slate-600 text-sm md:text-base">
-            Tap an icon to start
+          <p className="text-white/90 text-sm md:text-base mt-2 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+            Quick, fun mini‑games. Tap a tile to jump in.
           </p>
         </div>
 
-        {/* Icons Grid Only - app tile style */}
+        {/* Icons Grid with captions */}
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-6 justify-items-center">
           {games.map((game) => (
             <button
@@ -66,10 +118,10 @@ const GameSelector = ({ onSelectGame }) => {
               className="group focus:outline-none"
             >
               <div
-                className={`w-24 h-24 md:w-28 md:h-28 rounded-2xl shadow-lg ring-1 ring-black/5 bg-gradient-to-br ${game.color} relative overflow-hidden transition-transform duration-150 group-hover:scale-[1.03]`}
+                className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-[0_6px_20px_rgba(0,0,0,0.28)] ring-1 ring-black/20  relative overflow-hidden transition-transform duration-150 group-hover:scale-[1.04]`}
               >
                 {/* subtle inner shine */}
-                <div className="absolute inset-0 bg-white/10 mix-blend-overlay" />
+                <div className="absolute inset-0 bg-white/20 mix-blend-overlay" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   {game.image ? (
                     <img
@@ -84,14 +136,11 @@ const GameSelector = ({ onSelectGame }) => {
                   )}
                 </div>
               </div>
-              <span className="sr-only">{game.title}</span>
+              <span className="mt-2 block text-center text-[11px] md:text-xs font-medium text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+                {game.title}
+              </span>
             </button>
           ))}
-        </div>
-
-        {/* Footer */}
-        <div className="text-center mt-10">
-          <p className="text-slate-500 text-sm">More games coming soon...</p>
         </div>
       </div>
     </div>

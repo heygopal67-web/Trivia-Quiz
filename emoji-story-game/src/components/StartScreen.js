@@ -1,9 +1,26 @@
-import React from 'react';
+import React from "react";
 
-const StartScreen = ({ onStartGame, onBackToMenu }) => {
+const StartScreen = ({ onStartGame, onBackToMenu, isMuted, onToggleMute }) => {
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-3xl mx-auto text-center bg-white rounded-2xl shadow-lg border border-slate-200 p-6 md:p-8">
+    <div className="relative min-h-screen overflow-hidden p-6">
+      <div
+        className="absolute inset-0 -z-10 bg-cover bg-center"
+        style={{ backgroundImage: "url(/bg.gif)" }}
+      />
+      <div className="absolute inset-0 -z-10 bg-black/30" />
+
+      <button
+        onClick={onToggleMute}
+        className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 backdrop-blur transition-colors text-sm border border-slate-200 shadow"
+        aria-label={
+          isMuted ? "Unmute background music" : "Mute background music"
+        }
+        title={isMuted ? "Unmute" : "Mute"}
+      >
+        <span aria-hidden>{isMuted ? "🔇" : "🔊"}</span>
+      </button>
+
+      <div className="max-w-3xl mx-auto text-center rounded-3xl bg-white/70 backdrop-blur-xl shadow-2xl ring-1 ring-white/60 p-6 md:p-8">
         {/* Back Button */}
         <div className="text-left mb-6">
           <button
@@ -25,14 +42,18 @@ const StartScreen = ({ onStartGame, onBackToMenu }) => {
         </div>
 
         {/* Example Puzzle */}
-        <div className="bg-slate-50 rounded-2xl p-6 mb-8 border border-slate-200">
-          <p className="text-slate-600 text-xs uppercase tracking-wider mb-3">Example</p>
+        <div className="bg-white/50 backdrop-blur rounded-2xl p-6 mb-8 ring-1 ring-white/50 shadow">
+          <p className="text-slate-600 text-xs uppercase tracking-wider mb-3">
+            Example
+          </p>
           <div className="flex items-center justify-center gap-5 text-4xl md:text-5xl mb-3">
             <span>🧙‍♂️</span>
             <span>💍</span>
             <span>🌋</span>
           </div>
-          <p className="text-slate-900 text-base md:text-lg">Lord of the Rings</p>
+          <p className="text-slate-900 text-base md:text-lg">
+            Lord of the Rings
+          </p>
         </div>
 
         {/* Quick Rules */}
@@ -41,10 +62,12 @@ const StartScreen = ({ onStartGame, onBackToMenu }) => {
             <span className="text-slate-900 font-medium">15s</span> per puzzle
           </div>
           <div className="text-slate-600">
-            <span className="text-slate-900 font-medium">+10</span> points + time bonus
+            <span className="text-slate-900 font-medium">+10</span> points +
+            time bonus
           </div>
           <div className="text-slate-600">
-            <span className="text-slate-900 font-medium">Hints</span> always visible
+            <span className="text-slate-900 font-medium">Hints</span> always
+            visible
           </div>
         </div>
 

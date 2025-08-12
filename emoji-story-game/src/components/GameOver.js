@@ -1,6 +1,6 @@
 import React from "react";
 
-const GameOver = ({ score, onPlayAgain, onBackToMenu }) => {
+const GameOver = ({ score, onPlayAgain, onBackToMenu, isMuted, onToggleMute }) => {
   const getPerformanceRating = () => {
     if (score >= 150) return { text: "Legendary", color: "text-amber-400" };
     if (score >= 100) return { text: "Excellent", color: "text-emerald-400" };
@@ -12,8 +12,23 @@ const GameOver = ({ score, onPlayAgain, onBackToMenu }) => {
   const performance = getPerformanceRating();
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-lg mx-auto text-center bg-white rounded-2xl shadow-lg border border-slate-200 p-6 md:p-8">
+    <div className="relative min-h-screen overflow-hidden p-6">
+      <div
+        className="absolute inset-0 -z-10 bg-cover bg-center"
+        style={{ backgroundImage: 'url(/bg.gif)' }}
+      />
+      <div className="absolute inset-0 -z-10 bg-black/30" />
+
+      <button
+        onClick={onToggleMute}
+        className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 backdrop-blur transition-colors text-sm border border-slate-200 shadow"
+        aria-label={isMuted ? 'Unmute background music' : 'Mute background music'}
+        title={isMuted ? 'Unmute' : 'Mute'}
+      >
+        <span aria-hidden>{isMuted ? '🔇' : '🔊'}</span>
+      </button>
+
+      <div className="max-w-lg mx-auto text-center rounded-3xl bg-white/70 backdrop-blur-xl shadow-2xl ring-1 ring-white/60 p-6 md:p-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-2">Game Over</h1>
@@ -23,7 +38,7 @@ const GameOver = ({ score, onPlayAgain, onBackToMenu }) => {
         </div>
 
         {/* Score Display */}
-        <div className="bg-slate-50 rounded-2xl p-6 mb-6 border border-slate-200">
+        <div className="bg-white/50 backdrop-blur rounded-2xl p-6 mb-6 ring-1 ring-white/50 shadow">
           <h2 className="text-slate-600 text-xs uppercase tracking-wider mb-2">
             Final Score
           </h2>

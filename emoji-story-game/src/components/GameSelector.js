@@ -83,14 +83,23 @@ const GameSelector = ({ onSelectGame }) => {
   }, [isSoundOn, hasStarted]);
 
   return (
-    <div
-      className="relative min-h-screen overflow-hidden"
-      style={{
-        backgroundImage: `url(${isNight ? "/night.gif" : "/tree.gif"})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Crossfading background layers */}
+      <div className="absolute inset-0 -z-10">
+        <div
+          className={`absolute inset-0 bg-center bg-cover transition-opacity duration-700 ${
+            isNight ? "opacity-0" : "opacity-100"
+          }`}
+          style={{ backgroundImage: "url(/tree.gif)", willChange: "opacity" }}
+        />
+        <div
+          className={`absolute inset-0 bg-center bg-cover transition-opacity duration-700 ${
+            isNight ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ backgroundImage: "url(/night.gif)", willChange: "opacity" }}
+        />
+      </div>
+
       {/* overlay for readability */}
       <div
         className="absolute inset-0"
@@ -137,15 +146,15 @@ const GameSelector = ({ onSelectGame }) => {
           </p>
         </div>
 
-        {/* Icons Grid with captions */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-6 justify-items-center">
+        {/* Icons row centered with wrap */}
+        <div className="flex flex-wrap justify-center items-center gap-12 text-center">
           {games.map((game) => (
             <button
               key={game.id}
               onClick={() => onSelectGame(game.id)}
               aria-label={game.title}
               title={game.title}
-              className="group focus:outline-none"
+              className="group focus:outline-none flex flex-col items-center text-center"
             >
               <div
                 className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-[0_6px_20px_rgba(0,0,0,0.28)] ring-1 ring-black/20  relative overflow-hidden transition-transform duration-150 group-hover:scale-[1.04]`}
@@ -161,7 +170,7 @@ const GameSelector = ({ onSelectGame }) => {
                     />
                   ) : (
                     <span className="text-4xl md:text-5xl" aria-hidden>
-                      {game.icon}
+                  {game.icon}
                     </span>
                   )}
                 </div>

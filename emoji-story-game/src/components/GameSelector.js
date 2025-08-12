@@ -8,6 +8,7 @@ const GameSelector = ({ onSelectGame }) => {
       description:
         "Decode emoji sequences to reveal movies, people, and events",
       icon: "🎭",
+      image: "/guessmovie.png",
       color: "from-emerald-500 to-teal-500",
       bgColor: "bg-emerald-500/10",
       borderColor: "border-emerald-500/20",
@@ -54,17 +55,35 @@ const GameSelector = ({ onSelectGame }) => {
           </p>
         </div>
 
-        {/* Icons Grid Only */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-6 justify-items-center">
+        {/* Icons Grid Only - app tile style */}
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-6 justify-items-center">
           {games.map((game) => (
             <button
               key={game.id}
               onClick={() => onSelectGame(game.id)}
               aria-label={game.title}
               title={game.title}
-              className="text-5xl md:text-6xl p-2 md:p-3 rounded-xl hover:bg-slate-100 transition-colors duration-150"
+              className="group focus:outline-none"
             >
-              <span aria-hidden>{game.icon}</span>
+              <div
+                className={`w-24 h-24 md:w-28 md:h-28 rounded-2xl shadow-lg ring-1 ring-black/5 bg-gradient-to-br ${game.color} relative overflow-hidden transition-transform duration-150 group-hover:scale-[1.03]`}
+              >
+                {/* subtle inner shine */}
+                <div className="absolute inset-0 bg-white/10 mix-blend-overlay" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  {game.image ? (
+                    <img
+                      src={game.image}
+                      alt={game.title}
+                      className="w-14 h-14 md:w-16 md:h-16 object-cover rounded-xl shadow-sm"
+                    />
+                  ) : (
+                    <span className="text-4xl md:text-5xl" aria-hidden>
+                      {game.icon}
+                    </span>
+                  )}
+                </div>
+              </div>
               <span className="sr-only">{game.title}</span>
             </button>
           ))}

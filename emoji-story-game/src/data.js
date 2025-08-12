@@ -1,22 +1,73 @@
-// Puzzle data for the emoji story game
+// Puzzle data for the emoji story game - 10 quizzes per category
 export const puzzles = [
-  {
-    keywords: ["wizard", "ring", "volcano"],
-    answer: "Lord of the Rings",
-    hint: "Epic fantasy with a powerful ring",
-    category: "Fantasy",
-  },
-  {
-    keywords: ["spider", "man", "web"],
-    answer: "Spider-Man",
-    hint: "Friendly neighborhood superhero",
-    category: "Superhero",
-  },
+  // Sci-Fi - 10 puzzles
   {
     keywords: ["star", "wars", "lightsaber"],
     answer: "Star Wars",
     hint: "Space saga with the Force",
     category: "Sci-Fi",
+  },
+  {
+    keywords: ["jedi", "knight", "force"],
+    answer: "Star Wars",
+    hint: "Peacekeepers of the galaxy",
+    category: "Sci-Fi",
+  },
+  {
+    keywords: ["matrix", "hacker", "simulation"],
+    answer: "The Matrix",
+    hint: "Red pill or blue pill?",
+    category: "Sci-Fi",
+  },
+  {
+    keywords: ["avatar", "pandora", "blue"],
+    answer: "Avatar",
+    hint: "Journey to Pandora",
+    category: "Sci-Fi",
+  },
+  {
+    keywords: ["interstellar", "space", "wormhole"],
+    answer: "Interstellar",
+    hint: "Love transcends dimensions",
+    category: "Sci-Fi",
+  },
+  {
+    keywords: ["time", "travel", "car"],
+    answer: "Back to the Future",
+    hint: "Great Scott!",
+    category: "Sci-Fi",
+  },
+  {
+    keywords: ["robot", "cyborg", "future"],
+    answer: "The Terminator",
+    hint: "I'll be back",
+    category: "Sci-Fi",
+  },
+  {
+    keywords: ["alien", "bike", "moon"],
+    answer: "E.T. the Extra-Terrestrial",
+    hint: "Phone home",
+    category: "Sci-Fi",
+  },
+  {
+    keywords: ["replicant", "rain", "neon"],
+    answer: "Blade Runner",
+    hint: "Do androids dream?",
+    category: "Sci-Fi",
+  },
+  {
+    keywords: ["space", "xenomorph", "ship"],
+    answer: "Alien",
+    hint: "In space no one can hear you scream",
+    category: "Sci-Fi",
+  },
+
+  // Superhero - 10 puzzles
+  {
+    keywords: ["spider", "man", "web"],
+    answer: "Spider-Man",
+    hint: "Friendly neighborhood superhero",
+    category: "Superhero",
   },
   {
     keywords: ["bat", "man", "gotham"],
@@ -29,18 +80,6 @@ export const puzzles = [
     answer: "Iron Man",
     hint: "Genius billionaire playboy philanthropist",
     category: "Superhero",
-  },
-  {
-    keywords: ["harry", "potter", "wand"],
-    answer: "Harry Potter",
-    hint: "Boy who lived with a lightning scar",
-    category: "Fantasy",
-  },
-  {
-    keywords: ["jedi", "knight", "force"],
-    answer: "Star Wars",
-    hint: "Peacekeepers of the galaxy",
-    category: "Sci-Fi",
   },
   {
     keywords: ["super", "man", "krypton"],
@@ -59,5 +98,711 @@ export const puzzles = [
     answer: "Thor",
     hint: "God of thunder with Mjolnir",
     category: "Superhero",
+  },
+  {
+    keywords: ["wakanda", "panther", "king"],
+    answer: "Black Panther",
+    hint: "Vibranium nation",
+    category: "Superhero",
+  },
+  {
+    keywords: ["guardians", "galaxy", "mixtape"],
+    answer: "Guardians of the Galaxy",
+    hint: "A bunch of a-holes save the universe",
+    category: "Superhero",
+  },
+  {
+    keywords: ["amazon", "warrior", "lasso"],
+    answer: "Wonder Woman",
+    hint: "Princess of Themyscira",
+    category: "Superhero",
+  },
+  {
+    keywords: ["deadpool", "mercenary", "red"],
+    answer: "Deadpool",
+    hint: "Fourth-wall-breaking antihero",
+    category: "Superhero",
+  },
+
+  // Fantasy - 10 puzzles
+  {
+    keywords: ["wizard", "ring", "volcano"],
+    answer: "Lord of the Rings",
+    hint: "Epic fantasy with a powerful ring",
+    category: "Fantasy",
+  },
+  {
+    keywords: ["harry", "potter", "wand"],
+    answer: "Harry Potter",
+    hint: "Boy who lived with a lightning scar",
+    category: "Fantasy",
+  },
+  {
+    keywords: ["hobbit", "dragon", "journey"],
+    answer: "The Hobbit",
+    hint: "There and Back Again",
+    category: "Fantasy",
+  },
+  {
+    keywords: ["wardrobe", "lion", "winter"],
+    answer: "The Chronicles of Narnia",
+    hint: "Through the wardrobe",
+    category: "Fantasy",
+  },
+  {
+    keywords: ["true", "love", "swashbuckler"],
+    answer: "The Princess Bride",
+    hint: "As you wish",
+    category: "Fantasy",
+  },
+  {
+    keywords: ["faun", "maze", "war"],
+    answer: "Pan's Labyrinth",
+    hint: "Underground fairy tale",
+    category: "Fantasy",
+  },
+  {
+    keywords: ["sleep", "curse", "horns"],
+    answer: "Maleficent",
+    hint: "Villain's side of the story",
+    category: "Fantasy",
+  },
+  {
+    keywords: ["wizard", "creatures", "suitcase"],
+    answer: "Fantastic Beasts",
+    hint: "Find them",
+    category: "Fantasy",
+  },
+  {
+    keywords: ["rose", "castle", "curse"],
+    answer: "Beauty and the Beast",
+    hint: "Tale as old as time",
+    category: "Fantasy",
+  },
+  {
+    keywords: ["fallen", "star", "sky"],
+    answer: "Stardust",
+    hint: "Quest to find a fallen star",
+    category: "Fantasy",
+  },
+
+  // Adventure - 10 puzzles
+  {
+    keywords: ["dinosaur", "island", "park"],
+    answer: "Jurassic Park",
+    hint: "Life finds a way",
+    category: "Adventure",
+  },
+  {
+    keywords: ["pirate", "captain", "curse"],
+    answer: "Pirates of the Caribbean",
+    hint: "Savvy?",
+    category: "Adventure",
+  },
+  {
+    keywords: ["archaeologist", "whip", "temple"],
+    answer: "Indiana Jones",
+    hint: "Snakes... why did it have to be snakes?",
+    category: "Adventure",
+  },
+  {
+    keywords: ["game", "jungle", "dice"],
+    answer: "Jumanji",
+    hint: "Roll to survive",
+    category: "Adventure",
+  },
+  {
+    keywords: ["tomb", "curse", "scarab"],
+    answer: "The Mummy",
+    hint: "Ancient threat awakened",
+    category: "Adventure",
+  },
+  {
+    keywords: ["map", "liberty", "heist"],
+    answer: "National Treasure",
+    hint: "Steal the Declaration",
+    category: "Adventure",
+  },
+  {
+    keywords: ["boy", "wolves", "bear"],
+    answer: "The Jungle Book",
+    hint: "Bare necessities",
+    category: "Adventure",
+  },
+  {
+    keywords: ["gorilla", "island", "skyscraper"],
+    answer: "King Kong",
+    hint: "Beauty killed the beast",
+    category: "Adventure",
+  },
+  {
+    keywords: ["tiger", "boat", "ocean"],
+    answer: "Life of Pi",
+    hint: "Story of survival",
+    category: "Adventure",
+  },
+  {
+    keywords: ["pirate", "treasure", "kids"],
+    answer: "The Goonies",
+    hint: "Never say die",
+    category: "Adventure",
+  },
+
+  // Animation - 10 puzzles
+  {
+    keywords: ["frozen", "ice", "queen"],
+    answer: "Frozen",
+    hint: "Let it go",
+    category: "Animation",
+  },
+  {
+    keywords: ["aladdin", "genie", "lamp"],
+    answer: "Aladdin",
+    hint: "Street rat with three wishes",
+    category: "Animation",
+  },
+  {
+    keywords: ["lion", "king", "savanna"],
+    answer: "The Lion King",
+    hint: "Hakuna Matata",
+    category: "Animation",
+  },
+  {
+    keywords: ["toys", "friendship", "cowboy"],
+    answer: "Toy Story",
+    hint: "You've got a friend in me",
+    category: "Animation",
+  },
+  {
+    keywords: ["fish", "ocean", "clown"],
+    answer: "Finding Nemo",
+    hint: "Just keep swimming",
+    category: "Animation",
+  },
+  {
+    keywords: ["ogre", "swamp", "donkey"],
+    answer: "Shrek",
+    hint: "Better out than in",
+    category: "Animation",
+  },
+  {
+    keywords: ["emotions", "mind", "joy"],
+    answer: "Inside Out",
+    hint: "Headquarters of feelings",
+    category: "Animation",
+  },
+  {
+    keywords: ["guitar", "skeleton", "marigold"],
+    answer: "Coco",
+    hint: "Remember me",
+    category: "Animation",
+  },
+  {
+    keywords: ["balloons", "house", "old"],
+    answer: "Up",
+    hint: "Adventure is out there",
+    category: "Animation",
+  },
+  {
+    keywords: ["rat", "chef", "paris"],
+    answer: "Ratatouille",
+    hint: "Anyone can cook",
+    category: "Animation",
+  },
+
+  // Action - 10 puzzles
+  {
+    keywords: ["mission", "spy", "mask"],
+    answer: "Mission: Impossible",
+    hint: "This message will self destruct",
+    category: "Action",
+  },
+  {
+    keywords: ["agent", "007", "martini"],
+    answer: "James Bond",
+    hint: "Shaken, not stirred",
+    category: "Action",
+  },
+  {
+    keywords: ["tower", "christmas", "cop"],
+    answer: "Die Hard",
+    hint: "Yippee-ki-yay",
+    category: "Action",
+  },
+  {
+    keywords: ["desert", "chase", "rig"],
+    answer: "Mad Max: Fury Road",
+    hint: "Witness me!",
+    category: "Action",
+  },
+  {
+    keywords: ["hitman", "dog", "revenge"],
+    answer: "John Wick",
+    hint: "Baba Yaga",
+    category: "Action",
+  },
+  {
+    keywords: ["amnesia", "spy", "passport"],
+    answer: "The Bourne Identity",
+    hint: "Who am I?",
+    category: "Action",
+  },
+  {
+    keywords: ["bus", "bomb", "fast"],
+    answer: "Speed",
+    hint: "Stay above 50",
+    category: "Action",
+  },
+  {
+    keywords: ["rome", "arena", "revenge"],
+    answer: "Gladiator",
+    hint: "Are you not entertained?",
+    category: "Action",
+  },
+  {
+    keywords: ["spartans", "battle", "persia"],
+    answer: "300",
+    hint: "This is Sparta!",
+    category: "Action",
+  },
+  {
+    keywords: ["boxer", "underdog", "training"],
+    answer: "Rocky",
+    hint: "Eye of the Tiger",
+    category: "Action",
+  },
+
+  // Thriller - 10 puzzles
+  {
+    keywords: ["inception", "dream", "heist"],
+    answer: "Inception",
+    hint: "We need to go deeper",
+    category: "Thriller",
+  },
+  {
+    keywords: ["sins", "serial", "detective"],
+    answer: "Se7en",
+    hint: "What's in the box?",
+    category: "Thriller",
+  },
+  {
+    keywords: ["fbi", "cannibal", "lotion"],
+    answer: "The Silence of the Lambs",
+    hint: "Quid pro quo",
+    category: "Thriller",
+  },
+  {
+    keywords: ["asylum", "storm", "marshal"],
+    answer: "Shutter Island",
+    hint: "Which is the worse?",
+    category: "Thriller",
+  },
+  {
+    keywords: ["kidnapping", "maze", "detective"],
+    answer: "Prisoners",
+    hint: "Where are the girls?",
+    category: "Thriller",
+  },
+  {
+    keywords: ["magicians", "rivalry", "trick"],
+    answer: "The Prestige",
+    hint: "Are you watching closely?",
+    category: "Thriller",
+  },
+  {
+    keywords: ["soap", "rules", "underground"],
+    answer: "Fight Club",
+    hint: "First rule...",
+    category: "Thriller",
+  },
+  {
+    keywords: ["house", "class", "scheme"],
+    answer: "Parasite",
+    hint: "Smell of the basement",
+    category: "Thriller",
+  },
+  {
+    keywords: ["camera", "news", "accident"],
+    answer: "Nightcrawler",
+    hint: "If it bleeds, it leads",
+    category: "Thriller",
+  },
+  {
+    keywords: ["disappearance", "marriage", "media"],
+    answer: "Gone Girl",
+    hint: "Cool girl",
+    category: "Thriller",
+  },
+
+  // Comedy - 10 puzzles
+  {
+    keywords: ["boy", "thieves", "traps"],
+    answer: "Home Alone",
+    hint: "Keep the change, ya filthy animal",
+    category: "Comedy",
+  },
+  {
+    keywords: ["mask", "trickster", "green"],
+    answer: "The Mask",
+    hint: "Smokin'!",
+    category: "Comedy",
+  },
+  {
+    keywords: ["vegas", "tiger", "missing"],
+    answer: "The Hangover",
+    hint: "What happened last night?",
+    category: "Comedy",
+  },
+  {
+    keywords: ["teen", "party", "id"],
+    answer: "Superbad",
+    hint: "McLovin",
+    category: "Comedy",
+  },
+  {
+    keywords: ["friends", "road", "van"],
+    answer: "Dumb and Dumber",
+    hint: "So you're telling me...",
+    category: "Comedy",
+  },
+  {
+    keywords: ["nanny", "disguise", "family"],
+    answer: "Mrs. Doubtfire",
+    hint: "Hellooo dear!",
+    category: "Comedy",
+  },
+  {
+    keywords: ["loop", "alarm", "weather"],
+    answer: "Groundhog Day",
+    hint: "Same day again",
+    category: "Comedy",
+  },
+  {
+    keywords: ["highschool", "burn", "book"],
+    answer: "Mean Girls",
+    hint: "On Wednesdays we wear pink",
+    category: "Comedy",
+  },
+  {
+    keywords: ["drum", "bunk", "boats"],
+    answer: "Step Brothers",
+    hint: "Did we just become best friends?",
+    category: "Comedy",
+  },
+  {
+    keywords: ["zombie", "pub", "cricket"],
+    answer: "Shaun of the Dead",
+    hint: "Go to the Winchester",
+    category: "Comedy",
+  },
+
+  // Romance - 10 puzzles
+  {
+    keywords: ["ship", "iceberg", "love"],
+    answer: "Titanic",
+    hint: "I'm flying, Jack",
+    category: "Romance",
+  },
+  {
+    keywords: ["jazz", "dance", "hollywood"],
+    answer: "La La Land",
+    hint: "City of stars",
+    category: "Romance",
+  },
+  {
+    keywords: ["letters", "rain", "lake"],
+    answer: "The Notebook",
+    hint: "If you're a bird",
+    category: "Romance",
+  },
+  {
+    keywords: ["regency", "proposal", "dance"],
+    answer: "Pride and Prejudice",
+    hint: "Most ardently",
+    category: "Romance",
+  },
+  {
+    keywords: ["wedding", "singapore", "wealth"],
+    answer: "Crazy Rich Asians",
+    hint: "Family approval",
+    category: "Romance",
+  },
+  {
+    keywords: ["bookshop", "actress", "love"],
+    answer: "Notting Hill",
+    hint: "Just a girl, standing...",
+    category: "Romance",
+  },
+  {
+    keywords: ["list", "illness", "promise"],
+    answer: "A Walk to Remember",
+    hint: "You have to promise",
+    category: "Romance",
+  },
+  {
+    keywords: ["highschool", "poem", "bet"],
+    answer: "10 Things I Hate About You",
+    hint: "You can't just buy me",
+    category: "Romance",
+  },
+  {
+    keywords: ["memory", "erase", "beach"],
+    answer: "Eternal Sunshine of the Spotless Mind",
+    hint: "Meet me in Montauk",
+    category: "Romance",
+  },
+  {
+    keywords: ["cancer", "amsterdam", "stars"],
+    answer: "The Fault in Our Stars",
+    hint: "Okay? Okay.",
+    category: "Romance",
+  },
+
+  // Horror - 10 puzzles
+  {
+    keywords: ["clown", "balloon", "sewer"],
+    answer: "It",
+    hint: "You'll float too",
+    category: "Horror",
+  },
+  {
+    keywords: ["haunted", "demons", "house"],
+    answer: "The Conjuring",
+    hint: "Based on the Warrens",
+    category: "Horror",
+  },
+  {
+    keywords: ["dream", "glove", "freddy"],
+    answer: "A Nightmare on Elm Street",
+    hint: "Don't fall asleep",
+    category: "Horror",
+  },
+  {
+    keywords: ["tape", "well", "seven"],
+    answer: "The Ring",
+    hint: "Seven days",
+    category: "Horror",
+  },
+  {
+    keywords: ["possession", "priest", "pea"],
+    answer: "The Exorcist",
+    hint: "The power compels you",
+    category: "Horror",
+  },
+  {
+    keywords: ["cult", "miniatures", "click"],
+    answer: "Hereditary",
+    hint: "Don't look in the attic",
+    category: "Horror",
+  },
+  {
+    keywords: ["book", "monster", "grief"],
+    answer: "The Babadook",
+    hint: "Ba-ba-dook-dook-dook",
+    category: "Horror",
+  },
+  {
+    keywords: ["sunken", "tea", "chair"],
+    answer: "Get Out",
+    hint: "Stay woke",
+    category: "Horror",
+  },
+  {
+    keywords: ["hotel", "twins", "axe"],
+    answer: "The Shining",
+    hint: "Here's Johnny",
+    category: "Horror",
+  },
+  {
+    keywords: ["silence", "monsters", "family"],
+    answer: "A Quiet Place",
+    hint: "Don't make a sound",
+    category: "Horror",
+  },
+
+  // Mystery - 10 puzzles
+  {
+    keywords: ["detective", "london", "violin"],
+    answer: "Sherlock Holmes",
+    hint: "Elementary, my dear",
+    category: "Mystery",
+  },
+  {
+    keywords: ["knife", "family", "mansion"],
+    answer: "Knives Out",
+    hint: "Whodunit donut",
+    category: "Mystery",
+  },
+  {
+    keywords: ["hacker", "journalist", "case"],
+    answer: "The Girl with the Dragon Tattoo",
+    hint: "Lisbeth",
+    category: "Mystery",
+  },
+  {
+    keywords: ["train", "detective", "mustache"],
+    answer: "Murder on the Orient Express",
+    hint: "Poirot aboard",
+    category: "Mystery",
+  },
+  {
+    keywords: ["code", "newspaper", "killer"],
+    answer: "Zodiac",
+    hint: "Based on true investigation",
+    category: "Mystery",
+  },
+  {
+    keywords: ["symbols", "louvre", "church"],
+    answer: "The Da Vinci Code",
+    hint: "Holy grail",
+    category: "Mystery",
+  },
+  {
+    keywords: ["ghosts", "boy", "doctor"],
+    answer: "The Sixth Sense",
+    hint: "I see dead people",
+    category: "Mystery",
+  },
+  {
+    keywords: ["kidnap", "boston", "detective"],
+    answer: "Gone Baby Gone",
+    hint: "Find the girl",
+    category: "Mystery",
+  },
+  {
+    keywords: ["revenge", "imprisoned", "octopus"],
+    answer: "Oldboy",
+    hint: "15 years",
+    category: "Mystery",
+  },
+  {
+    keywords: ["camera", "neighbor", "apartment"],
+    answer: "Rear Window",
+    hint: "He saw something",
+    category: "Mystery",
+  },
+
+  // Classics - 10 puzzles
+  {
+    keywords: ["mafia", "family", "don"],
+    answer: "The Godfather",
+    hint: "An offer you can't refuse",
+    category: "Classics",
+  },
+  {
+    keywords: ["life", "chocolates", "bench"],
+    answer: "Forrest Gump",
+    hint: "Run, Forrest, run!",
+    category: "Classics",
+  },
+  {
+    keywords: ["letters", "airport", "piano"],
+    answer: "Casablanca",
+    hint: "Here's looking at you",
+    category: "Classics",
+  },
+  {
+    keywords: ["rosebud", "newspaper", "tycoon"],
+    answer: "Citizen Kane",
+    hint: "Rosebud",
+    category: "Classics",
+  },
+  {
+    keywords: ["yellow", "road", "witch"],
+    answer: "The Wizard of Oz",
+    hint: "No place like home",
+    category: "Classics",
+  },
+  {
+    keywords: ["umbrella", "tap", "studio"],
+    answer: "Singin' in the Rain",
+    hint: "What a glorious feeling",
+    category: "Classics",
+  },
+  {
+    keywords: ["shower", "motel", "mother"],
+    answer: "Psycho",
+    hint: "Bates Motel",
+    category: "Classics",
+  },
+  {
+    keywords: ["angel", "bells", "town"],
+    answer: "It's a Wonderful Life",
+    hint: "Every time a bell rings",
+    category: "Classics",
+  },
+  {
+    keywords: ["nuns", "alps", "songs"],
+    answer: "The Sound of Music",
+    hint: "Do-Re-Mi",
+    category: "Classics",
+  },
+  {
+    keywords: ["ward", "rebellion", "chief"],
+    answer: "One Flew Over the Cuckoo's Nest",
+    hint: "Nurse Ratched",
+    category: "Classics",
+  },
+
+  // Sports - 10 puzzles
+  {
+    keywords: ["football", "coach", "unity"],
+    answer: "Remember the Titans",
+    hint: "Strong side",
+    category: "Sports",
+  },
+  {
+    keywords: ["basketball", "coach", "grades"],
+    answer: "Coach Carter",
+    hint: "Our deepest fear",
+    category: "Sports",
+  },
+  {
+    keywords: ["baseball", "stats", "oakland"],
+    answer: "Moneyball",
+    hint: "Change the game",
+    category: "Sports",
+  },
+  {
+    keywords: ["crane", "dojo", "wax"],
+    answer: "The Karate Kid",
+    hint: "Wax on, wax off",
+    category: "Sports",
+  },
+  {
+    keywords: ["corn", "ghosts", "build"],
+    answer: "Field of Dreams",
+    hint: "If you build it",
+    category: "Sports",
+  },
+  {
+    keywords: ["notre", "football", "dream"],
+    answer: "Rudy",
+    hint: "Five-foot-nothin",
+    category: "Sports",
+  },
+  {
+    keywords: ["basketball", "tunes", "space"],
+    answer: "Space Jam",
+    hint: "Welcome to the Jam",
+    category: "Sports",
+  },
+  {
+    keywords: ["boxing", "legacy", "adonis"],
+    answer: "Creed",
+    hint: "Legacy of Apollo",
+    category: "Sports",
+  },
+  {
+    keywords: ["football", "family", "left"],
+    answer: "The Blind Side",
+    hint: "Protect the quarterback",
+    category: "Sports",
+  },
+  {
+    keywords: ["olympics", "running", "chariot"],
+    answer: "Chariots of Fire",
+    hint: "Running for glory",
+    category: "Sports",
   },
 ];

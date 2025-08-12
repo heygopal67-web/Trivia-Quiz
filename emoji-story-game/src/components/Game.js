@@ -36,25 +36,43 @@ const Game = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const bgmAudioRef = useRef(null);
-  const [puzzleOrder, setPuzzleOrder] = useState(() =>
-    shuffleIndices(puzzles.length)
-  );
+  const MAX_ROUNDS = 10;
+  const [puzzleOrder, setPuzzleOrder] = useState([]);
 
-  // Helper to get the current puzzle data using the shuffled order
-  const filteredPuzzles =
-    selectedCategory === "All"
-      ? puzzles
-      : puzzles.filter((p) => (p.category || "Misc") === selectedCategory);
+  // Get filtered puzzles based on selected category
+  const filteredPuzzles = useCallback(() => {
+    if (selectedCategory === "All") {
+      return puzzles;
+    }
+    return puzzles.filter((p) => p.category === selectedCategory);
+  }, [selectedCategory]);
+
+  // Get current puzzle data
   const getCurrentPuzzleData = useCallback(() => {
-    const orderedIndex = puzzleOrder[currentPuzzleIndex] ?? 0;
-    const source = filteredPuzzles.length > 0 ? filteredPuzzles : puzzles;
-    return source[orderedIndex % source.length];
+    const puzzleList = filteredPuzzles();
+    if (puzzleList.length === 0) return null;
+
+    const orderedIndex = puzzleOrder[currentPuzzleIndex];
+    if (orderedIndex === undefined || orderedIndex >= puzzleList.length)
+      return null;
+
+    return puzzleList[orderedIndex];
   }, [currentPuzzleIndex, puzzleOrder, filteredPuzzles]);
 
+  // Initialize puzzle order when category changes
+  useEffect(() => {
+    const puzzleList = filteredPuzzles();
+    const totalRounds = Math.min(MAX_ROUNDS, puzzleList.length);
+    const newOrder = shuffleIndices(puzzleList.length).slice(0, totalRounds);
+    setPuzzleOrder(newOrder);
+    setCurrentPuzzleIndex(0);
+  }, [selectedCategory, filteredPuzzles]);
+
   const loadPuzzle = useCallback(async () => {
-    const total =
-      filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
-    if (currentPuzzleIndex >= total) {
+    const puzzleList = filteredPuzzles();
+    const totalRounds = Math.min(MAX_ROUNDS, puzzleList.length);
+
+    if (currentPuzzleIndex >= totalRounds) {
       setGamePhase("gameOver");
       return;
     }
@@ -65,14 +83,22 @@ const Game = () => {
 
     try {
       const currentData = getCurrentPuzzleData();
+      if (!currentData) {
+        console.error("No puzzle data available");
+        return;
+      }
+
       const emojis = await fetchEmojisForKeywords(currentData.keywords);
       setCurrentEmojis(emojis);
       setCurrentPuzzle(currentData);
     } catch (error) {
       console.error("Error loading puzzle:", error);
       const currentData = getCurrentPuzzleData();
+      if (!currentData) return;
+
       const fallbackEmojis = currentData.keywords.map((keyword) => {
         const fallbackMap = {
+          // Original keywords
           wizard: "🧙‍♂️",
           ring: "💍",
           volcano: "🌋",
@@ -100,6 +126,352 @@ const Game = () => {
           thor: "⚡",
           hammer: "🔨",
           asgard: "🏰",
+
+          // Sci-Fi keywords
+          matrix: "💊",
+          hacker: "💻",
+          simulation: "🔄",
+          avatar: "🔵",
+          pandora: "🌿",
+          blue: "🔷",
+          interstellar: "🌌",
+          space: "🚀",
+          wormhole: "🌀",
+          alien: "👽",
+          bike: "🚲",
+          moon: "🌙",
+          replicant: "🤖",
+          rain: "🌧️",
+          neon: "💡",
+          xenomorph: "👾",
+          ship: "🚢",
+          desert: "🏜️",
+          spice: "🧂",
+          worms: "🪱",
+          time: "⏰",
+          travel: "✈️",
+          car: "🚗",
+          robot: "🤖",
+          cyborg: "🔧",
+          future: "🔮",
+
+          // Fantasy keywords
+          hobbit: "🧝",
+          dragon: "🐉",
+          journey: "🗺️",
+          wardrobe: "🚪",
+          winter: "❄️",
+          true: "✅",
+          swashbuckler: "⚔️",
+          faun: "🐐",
+          maze: "🌀",
+          war: "⚔️",
+          sleep: "😴",
+          horns: "🦄",
+          creatures: "🐾",
+          suitcase: "💼",
+          rose: "🌹",
+          castle: "🏰",
+          fallen: "🍂",
+          sky: "☁️",
+
+          // Adventure keywords
+          dinosaur: "🦕",
+          island: "🏝️",
+          park: "🎡",
+          pirate: "🏴‍☠️",
+          curse: "⚡",
+          archaeologist: "🔍",
+          whip: "🪢",
+          temple: "🏛️",
+          game: "🎲",
+          jungle: "🌴",
+          dice: "🎲",
+          tomb: "⚰️",
+          scarab: "🪲",
+          map: "🗺️",
+          liberty: "🗽",
+          heist: "🦹",
+          boy: "👦",
+          wolves: "🐺",
+          bear: "🐻",
+          gorilla: "🦍",
+          skyscraper: "🏢",
+          tiger: "🐯",
+          boat: "⛵",
+          ocean: "🌊",
+          treasure: "💎",
+          kids: "👶",
+
+          // Animation keywords
+          frozen: "❄️",
+          ice: "🧊",
+          queen: "👑",
+          aladdin: "🧞",
+          genie: "🪔",
+          lamp: "💡",
+          lion: "🦁",
+          king: "👑",
+          savanna: "🌾",
+          wakanda: "💎",
+          panther: "🐆",
+          guardians: "🛡️",
+          galaxy: "🌌",
+          mixtape: "📼",
+          amazon: "🏹",
+          warrior: "⚔️",
+          lasso: "🪢",
+          deadpool: "🔴",
+          mercenary: "💰",
+          red: "🔴",
+          toys: "🧸",
+          friendship: "🤝",
+          cowboy: "🤠",
+          fish: "🐠",
+          clown: "🤡",
+          ogre: "👹",
+          swamp: "🐸",
+          donkey: "🦙",
+          emotions: "😊",
+          mind: "🧠",
+          joy: "😄",
+          guitar: "🎸",
+          skeleton: "💀",
+          marigold: "🌼",
+          balloons: "🎈",
+          house: "🏠",
+          old: "👴",
+          rat: "🐀",
+          chef: "👨‍🍳",
+          paris: "🗼",
+
+          // Action keywords
+          mission: "🎯",
+          spy: "🕵️",
+          mask: "🎭",
+          agent: "🕵️",
+          "007": "🔫",
+          martini: "🍸",
+          tower: "🗼",
+          christmas: "🎄",
+          cop: "👮",
+          chase: "🏃",
+          rig: "🚛",
+          hitman: "💀",
+          dog: "🐕",
+          revenge: "⚔️",
+          amnesia: "🧠",
+          passport: "📄",
+          bus: "🚌",
+          bomb: "💣",
+          fast: "⚡",
+          rome: "🏛️",
+          arena: "⚔️",
+          spartans: "🛡️",
+          battle: "⚔️",
+          persia: "🏺",
+          boxer: "🥊",
+          underdog: "🐕",
+          training: "💪",
+
+          // Thriller keywords
+          inception: "🌙",
+          dream: "💭",
+          sins: "😈",
+          serial: "📺",
+          fbi: "🕵️",
+          cannibal: "🍖",
+          lotion: "🧴",
+          asylum: "🏥",
+          storm: "⛈️",
+          marshal: "👮",
+          kidnapping: "🚨",
+          rivalry: "⚔️",
+          trick: "🎭",
+          rules: "📜",
+          underground: "🚇",
+          class: "📚",
+          scheme: "🎭",
+          camera: "📷",
+          news: "📰",
+          accident: "🚑",
+          disappearance: "❓",
+          marriage: "💒",
+          media: "📺",
+          soap: "🧼",
+          house: "🏠",
+          book: "📚",
+          monster: "👹",
+          grief: "😢",
+          sunken: "🌊",
+          tea: "☕",
+          chair: "🪑",
+          haunted: "👻",
+          demons: "😈",
+          detective: "🕵️",
+          london: "🇬🇧",
+          violin: "🎻",
+
+          // Comedy keywords
+          thieves: "🦹",
+          traps: "🪤",
+          mask: "🎭",
+          trickster: "🎭",
+          green: "🟢",
+          vegas: "🎰",
+          tiger: "🐯",
+          missing: "❓",
+          teen: "👨‍🎓",
+          party: "🎉",
+          id: "🆔",
+          friends: "👥",
+          road: "🛣️",
+          van: "🚐",
+          nanny: "👩‍👶",
+          disguise: "🎭",
+          family: "👨‍👩‍👧‍👦",
+          loop: "🔄",
+          alarm: "⏰",
+          weather: "🌤️",
+          highschool: "🏫",
+          burn: "🔥",
+          book: "📚",
+          drum: "🥁",
+          bunk: "🛏️",
+          boats: "⛵",
+          zombie: "🧟",
+          pub: "🍺",
+          cricket: "🦗",
+
+          // Romance keywords
+          ship: "🚢",
+          iceberg: "🧊",
+          love: "❤️",
+          jazz: "🎷",
+          dance: "💃",
+          hollywood: "🎬",
+          letters: "💌",
+          rain: "🌧️",
+          lake: "🏞️",
+          regency: "👑",
+          proposal: "💍",
+          singapore: "🇸🇬",
+          wealth: "💰",
+          bookshop: "📚",
+          actress: "🎭",
+          illness: "🤒",
+          promise: "🤝",
+          poem: "📝",
+          bet: "💰",
+          memory: "🧠",
+          erase: "🧽",
+          beach: "🏖️",
+          cancer: "🦀",
+          amsterdam: "🇳🇱",
+          stars: "⭐",
+
+          // Horror keywords
+          clown: "🤡",
+          balloon: "🎈",
+          sewer: "🚽",
+          nightmare: "😱",
+          glove: "🧤",
+          freddy: "🔪",
+          tape: "📼",
+          well: "🕳️",
+          seven: "7️⃣",
+          possession: "👹",
+          priest: "⛪",
+          pea: "🫛",
+          cult: "👥",
+          miniatures: "🏠",
+          click: "🖱️",
+          grief: "😢",
+          sunken: "🌊",
+          tea: "☕",
+          chair: "🪑",
+          hotel: "🏨",
+          twins: "👯",
+          axe: "🪓",
+          silence: "🤫",
+          monsters: "👹",
+
+          // Mystery keywords
+          knife: "🔪",
+          mansion: "🏰",
+          hacker: "💻",
+          journalist: "📰",
+          case: "📁",
+          train: "🚂",
+          mustache: "👨",
+          code: "🔐",
+          killer: "🔪",
+          symbols: "🔯",
+          louvre: "🏛️",
+          church: "⛪",
+          kidnap: "🚨",
+          boston: "🇺🇸",
+          revenge: "⚔️",
+          imprisoned: "🔒",
+          octopus: "🐙",
+          neighbor: "🏠",
+          apartment: "🏢",
+
+          // Classics keywords
+          mafia: "🕴️",
+          don: "👔",
+          life: "💚",
+          chocolates: "🍫",
+          bench: "🪑",
+          letters: "💌",
+          airport: "✈️",
+          piano: "🎹",
+          rosebud: "🌹",
+          newspaper: "📰",
+          tycoon: "💰",
+          yellow: "🟡",
+          road: "🛣️",
+          witch: "🧙‍♀️",
+          umbrella: "☂️",
+          tap: "🚰",
+          studio: "🎬",
+          shower: "🚿",
+          motel: "🏨",
+          mother: "👩",
+          angel: "👼",
+          bells: "🔔",
+          town: "🏘️",
+          nuns: "👩‍💼",
+          alps: "🏔️",
+          songs: "🎵",
+          rebellion: "⚔️",
+          chief: "👨‍💼",
+
+          // Sports keywords
+          football: "🏈",
+          coach: "📋",
+          unity: "🤝",
+          basketball: "🏀",
+          grades: "📊",
+          baseball: "⚾",
+          stats: "📈",
+          oakland: "🌉",
+          crane: "🦩",
+          dojo: "🏯",
+          wax: "🕯️",
+          corn: "🌽",
+          ghosts: "👻",
+          build: "🏗️",
+          notre: "⛪",
+          dream: "💭",
+          tunes: "🎵",
+          legacy: "👑",
+          adonis: "💪",
+          family: "👨‍👩‍👧‍👦",
+          left: "⬅️",
+          olympics: "🏅",
+          running: "🏃",
+          chariot: "🏺",
         };
         return fallbackMap[keyword.toLowerCase()] || "❓";
       });
@@ -108,7 +480,7 @@ const Game = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [currentPuzzleIndex, puzzleOrder, selectedCategory, filteredPuzzles.length, getCurrentPuzzleData]);
+  }, [currentPuzzleIndex, filteredPuzzles, getCurrentPuzzleData]);
 
   useEffect(() => {
     if (gamePhase === "playing" && currentGame === "emoji-story") {
@@ -176,9 +548,6 @@ const Game = () => {
   const handleGameSelect = (gameId) => {
     setCurrentGame(gameId);
     if (gameId === "emoji-story") {
-      const total =
-        filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
-      setPuzzleOrder(shuffleIndices(total));
       setGamePhase("start");
     } else {
       setGamePhase("playing");
@@ -200,9 +569,6 @@ const Game = () => {
 
   const handleStartGame = () => {
     setGamePhase("playing");
-    const total =
-      filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
-    setPuzzleOrder(shuffleIndices(total));
     setCurrentPuzzleIndex(0);
     setScore(0);
     setTimeLeft(15);
@@ -238,25 +604,11 @@ const Game = () => {
 
   const handlePlayAgain = () => {
     setGamePhase("start");
-    const total =
-      filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
-    setPuzzleOrder(shuffleIndices(total));
     setCurrentPuzzleIndex(0);
     setScore(0);
     setTimeLeft(15);
     setFeedback("");
   };
-
-  // If category changes while on start screen, reset order and index for a clean start
-  useEffect(() => {
-    if (currentGame === "emoji-story" && gamePhase === "start") {
-      const total =
-        filteredPuzzles.length > 0 ? filteredPuzzles.length : puzzles.length;
-      setPuzzleOrder(shuffleIndices(total));
-      setCurrentPuzzleIndex(0);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategory]);
 
   // Render different phases and games
   if (gamePhase === "menu") {
@@ -286,7 +638,7 @@ const Game = () => {
         onSelectCategory={setSelectedCategory}
         categories={[
           "All",
-          ...Array.from(new Set(puzzles.map((p) => p.category || "Misc"))),
+          ...Array.from(new Set(puzzles.map((p) => p.category))),
         ]}
       />
     );
@@ -307,6 +659,9 @@ const Game = () => {
   // Keep rendering the game UI while loading next puzzle to avoid jarring transitions
 
   // Render Emoji Story Game
+  const puzzleList = filteredPuzzles();
+  const totalRounds = Math.min(MAX_ROUNDS, puzzleList.length);
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <div
@@ -347,10 +702,7 @@ const Game = () => {
                 </div>
                 <div className="text-slate-800 text-xs md:text-sm px-2 py-1 rounded-full bg-white/60 backdrop-blur ring-1 ring-white/50">
                   <span className="font-medium">{currentPuzzleIndex + 1}</span>{" "}
-                  /{" "}
-                  {filteredPuzzles.length > 0
-                    ? filteredPuzzles.length
-                    : puzzles.length}
+                  / {totalRounds}
                 </div>
                 <div className="text-emerald-900 text-xs md:text-sm px-2 py-1 rounded-full bg-emerald-50/80 backdrop-blur ring-1 ring-emerald-200/70">
                   <span className="uppercase tracking-wide">Score:</span>{" "}

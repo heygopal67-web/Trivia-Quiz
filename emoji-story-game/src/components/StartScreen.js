@@ -36,7 +36,28 @@ const StartScreen = ({
           >
             ← Menu
           </button>
-          <div />
+
+          {/* Category Selector - Inline with Menu Button */}
+          <div className="flex items-center gap-3">
+            <label
+              htmlFor="category-select"
+              className="text-slate-700 font-medium text-sm"
+            >
+              Category:
+            </label>
+            <select
+              id="category-select"
+              value={selectedCategory || "All"}
+              onChange={(e) => onSelectCategory(e.target.value)}
+              className="px-3 py-1.5 rounded-full bg-white/80 backdrop-blur ring-1 ring-white/60 text-slate-700 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all"
+            >
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div>
@@ -61,23 +82,6 @@ const StartScreen = ({
           <p className="text-slate-900 text-base md:text-lg">
             Lord of the Rings
           </p>
-        </div>
-
-        {/* Category Selector */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 md:gap-3">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => onSelectCategory(cat)}
-              className={`px-3 py-2 rounded-full text-sm transition-colors ring-1 backdrop-blur shadow-sm ${
-                (selectedCategory || "All") === cat
-                  ? "bg-emerald-600 text-white ring-emerald-500"
-                  : "bg-white/60 text-slate-700 ring-white/50 hover:bg-white/70"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
         </div>
 
         {/* Quick Rules */}

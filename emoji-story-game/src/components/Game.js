@@ -11,6 +11,16 @@ import WordScramble from "./WordScramble";
 import MathPuzzle from "./MathPuzzle";
 import MemoryGame from "./MemoryGame";
 
+// Fisher–Yates shuffle to randomize puzzle order per session
+const shuffleIndices = (length) => {
+  const indices = Array.from({ length }, (_, i) => i);
+  for (let i = indices.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  return indices;
+};
+
 const Game = () => {
   const [currentGame, setCurrentGame] = useState(null); // 'emoji-story', 'word-scramble', 'math-puzzle', 'memory-game'
   const [gamePhase, setGamePhase] = useState("menu"); // 'menu', 'start', 'playing', 'gameOver'
@@ -25,8 +35,15 @@ const Game = () => {
   const [isMuted, setIsMuted] = useState(false);
 
   const bgmAudioRef = useRef(null);
+  const [puzzleOrder, setPuzzleOrder] = useState(() =>
+    shuffleIndices(puzzles.length)
+  );
 
-  const currentPuzzleData = puzzles[currentPuzzleIndex];
+  // Helper to get the current puzzle data using the shuffled order
+  const getCurrentPuzzleData = () => {
+    const orderedIndex = puzzleOrder[currentPuzzleIndex] ?? 0;
+    return puzzles[orderedIndex];
+  };
 
   const loadPuzzle = useCallback(async () => {
     if (currentPuzzleIndex >= puzzles.length) {
@@ -39,12 +56,14 @@ const Game = () => {
     setTimeLeft(15);
 
     try {
-      const emojis = await fetchEmojisForKeywords(currentPuzzleData.keywords);
+      const currentData = getCurrentPuzzleData();
+      const emojis = await fetchEmojisForKeywords(currentData.keywords);
       setCurrentEmojis(emojis);
-      setCurrentPuzzle(currentPuzzleData);
+      setCurrentPuzzle(currentData);
     } catch (error) {
       console.error("Error loading puzzle:", error);
-      const fallbackEmojis = currentPuzzleData.keywords.map((keyword) => {
+      const currentData = getCurrentPuzzleData();
+      const fallbackEmojis = currentData.keywords.map((keyword) => {
         const fallbackMap = {
           wizard: "🧙‍♂️",
           ring: "💍",
@@ -77,11 +96,11 @@ const Game = () => {
         return fallbackMap[keyword.toLowerCase()] || "❓";
       });
       setCurrentEmojis(fallbackEmojis);
-      setCurrentPuzzle(currentPuzzleData);
+      setCurrentPuzzle(currentData);
     } finally {
       setIsLoading(false);
     }
-  }, [currentPuzzleIndex, currentPuzzleData]);
+  }, [currentPuzzleIndex, puzzleOrder]);
 
   useEffect(() => {
     if (gamePhase === "playing" && currentGame === "emoji-story") {
@@ -149,6 +168,7 @@ const Game = () => {
   const handleGameSelect = (gameId) => {
     setCurrentGame(gameId);
     if (gameId === "emoji-story") {
+      setPuzzleOrder(shuffleIndices(puzzles.length));
       setGamePhase("start");
     } else {
       setGamePhase("playing");
@@ -170,6 +190,7 @@ const Game = () => {
 
   const handleStartGame = () => {
     setGamePhase("playing");
+    setPuzzleOrder(shuffleIndices(puzzles.length));
     setCurrentPuzzleIndex(0);
     setScore(0);
     setTimeLeft(15);
@@ -205,6 +226,7 @@ const Game = () => {
 
   const handlePlayAgain = () => {
     setGamePhase("start");
+    setPuzzleOrder(shuffleIndices(puzzles.length));
     setCurrentPuzzleIndex(0);
     setScore(0);
     setTimeLeft(15);
